@@ -23,4 +23,4 @@ data.mat = foreach(i=1:nrow(data.raw), .combine = "rbind") %do% {
 colnames(data.mat) = c("charTitle", "charNames", "charPosition")
 
 # write matrix to csv
-write.csv(data.mat, file = "characterPositionsTable.csv", row.names = FALSE)
+write.csv(data.mat, file = "characterPositionsTable.csv", row.names = FALSE, fileEncoding = "UTF-8")
