@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+
+<!-- based on Bootstrap theme. -->
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>사렌 사거리 계산기</title>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2 align="center">사렌 사거리 계산기</h2>
+
+  <p align="center">입력 또는 선택한 캐릭터들과 사렌과의 사거리를 계산하여 가장 가까운 캐릭터를 표시합니다.</p>
+
+  <form>
+
+    <div class="form-row">
+
+      <div class="form-group col-md-6">
+        <label for="inputByText">캐릭터를 입력:</label>
+        <input id="inputByText" type="text" class="form-control" placeholder="캐릭터는 띄어쓰기로 구분">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputByClick">캐릭터를 클릭:</label>
+        <button id="inputByClick" type="button" data-toggle="modal" data-target="#clickCharacters" class="btn btn-primary btn-block"> 클릭하여 선택하기 </button>
+      </div>
+  
+    </div>
+
+  </form>
+
+  <br>
+
+  <div class="jumbotron">
+
+    <h3>검색결과:</h3>
+
+    <ul id="sarenList" class="list-group">
+      <li id="사렌" class="list-group-item text-center">사렌 (430)</li>
+    </ul>
+
+  </div>
+
+  <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
+
+  <div class="modal fade" id="clickCharacters" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="note">캐릭터를 클릭하여 선택</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>준비중</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+          <button type="button" class="btn btn-primary">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  <!-- library for loading CSV files -->
+  <script src="../lib/PapaParse/papaparse.min.js"></script>
+  
+  <!-- summon calculator script -->
+  <script src="sarenScript.js"></script>
+
+</div>
+
+</body>
+
+</html>
