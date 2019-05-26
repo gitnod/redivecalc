@@ -16,7 +16,7 @@ data.mat = foreach(i=1:nrow(data.raw), .combine = "rbind") %do% {
   if(data.array.length > 2) {
     charAttributes = paste(data.array[2:(data.array.length-1)], collapse = " ")
   } else {
-    charAttributes = charName
+    charAttributes = data.array[1]
   }
   # record all keywords
   charKeywords = paste(data.array[1:(data.array.length-1)], collapse = " ")
