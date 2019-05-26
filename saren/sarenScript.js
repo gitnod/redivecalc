@@ -117,7 +117,7 @@ function highlightList() {
     var liClosestCharacter = document.getElementById(displayedCharactersTitlesArray[minIndex]);
     // highlight saren and closest character
     liSaren.className = "list-group-item list-group-item-dark text-center";
-    liClosestCharacter.className = "list-group-item list-group-item-success text-center";
+    liClosestCharacter.className = "list-group-item list-group-item-success text-center font-weight-bold";
 }
 
 // load character position map after page load
