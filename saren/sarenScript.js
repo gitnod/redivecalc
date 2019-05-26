@@ -1,15 +1,16 @@
 
 // load HTML objects
 var inputByText = document.getElementById("inputByText");
+var includeLimited = document.getElementById("includeLimited");
 var sarenList = document.getElementById("sarenList");
 var backButton = document.getElementById("backButton");
 
 var characterInputByText;
 var characterInputByClick;
 var characterPositionsTable;
+var characterTitlesMap = new Map;
 var characterPositionsMap = new Map;
 var characterRelativePositionsMap = new Map;
-var characterTitlesMap = new Map;
 var searchedCharacters = [];
 var displayedCharacters = [];
 
@@ -59,18 +60,39 @@ function updateList(keywordsArray) {
     searchedCharacters = [];
 
     // initialize keyword inclusion indicator
+    var includesName = 0;
+    var includesAttributes = 0;
     var includesKeyword = 0;
 
-    // search for the character titles given the input
-    for(var j=0; j < characterPositionsTable.length; j++) {
-        includesKeyword = 0;
-        for(var k=0; k < keywordsArray.length; k++) {
-            includesKeyword += characterPositionsTable[j]["charNames"].includes(keywordsArray[k]);
+    // search for the character titles given the input, when allowing limited character search with basic names
+    if(includeLimited.checked == true) {
+
+        for(var j=0; j < characterPositionsTable.length; j++) {
+            includesKeyword = 0;
+            for(var k=0; k < keywordsArray.length; k++) {
+                includesKeyword += characterPositionsTable[j]["charKeywords"].includes(keywordsArray[k]);
+            }
+            if(includesKeyword > 0) {
+                searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charKeywords"]));
+            }
         }
-        if(includesKeyword > 0) {
-            searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charNames"]));
+
+    } else {
+
+        for(var j=0; j < characterPositionsTable.length; j++) {
+            includesName = 0;
+            includesAttributes = 0;
+            includesKeyword = 0;
+            for(var k=0; k < keywordsArray.length; k++) {
+                includesName += characterPositionsTable[j]["charName"].includes(keywordsArray[k]) * (1-characterPositionsTable[j]["charLimited"]);
+                includesAttributes += characterPositionsTable[j]["charAttributes"].includes(keywordsArray[k]);
+            }
+            if(includesName + includesAttributes > 0) {
+                searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charKeywords"]));
+            }
         }
     }
+
 
     // add saren to the character titles list
     if(searchedCharacters.includes("사렌") == false) {
@@ -139,7 +161,7 @@ window.onload = function() {
           characterPositionsMap.clear();
           characterTitlesMap.clear();
           for(var j=0; j < characterPositionsTable.length; j++) {
-              characterTitlesMap.set(characterPositionsTable[j]["charNames"], characterPositionsTable[j]["charTitle"]);
+              characterTitlesMap.set(characterPositionsTable[j]["charKeywords"], characterPositionsTable[j]["charTitle"]);
               characterPositionsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charPosition"]);
               characterRelativePositionsMap.set(characterPositionsTable[j]["charTitle"], Math.abs(Number(characterPositionsTable[j]["charPosition"]) - 430));
           }
