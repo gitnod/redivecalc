@@ -60,8 +60,6 @@ function updateList(keywordsArray) {
     searchedCharacters = [];
 
     // initialize keyword inclusion indicator
-    var includesName = 0;
-    var includesAttributes = 0;
     var includesKeyword = 0;
 
     // search for the character titles given the input, when allowing limited character search with basic names
@@ -80,19 +78,16 @@ function updateList(keywordsArray) {
     } else {
 
         for(var j=0; j < characterPositionsTable.length; j++) {
-            includesName = 0;
-            includesAttributes = 0;
             includesKeyword = 0;
             for(var k=0; k < keywordsArray.length; k++) {
-                includesName += characterPositionsTable[j]["charName"].includes(keywordsArray[k]) * (1-characterPositionsTable[j]["charLimited"]);
-                includesAttributes += characterPositionsTable[j]["charAttributes"].includes(keywordsArray[k]);
+                includesKeyword += characterPositionsTable[j]["charAttributes"].includes(keywordsArray[k]);
             }
-            if(includesName + includesAttributes > 0) {
+            if(includesKeyword > 0) {
                 searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charKeywords"]));
             }
         }
-    }
 
+    }
 
     // add saren to the character titles list
     if(searchedCharacters.includes("사렌") == false) {
