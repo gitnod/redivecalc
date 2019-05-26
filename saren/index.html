@@ -31,8 +31,8 @@
         <label for="inputByText">캐릭터를 입력:</label>
         <input id="inputByText" type="text" class="form-control" placeholder="캐릭터는 띄어쓰기로 구분">
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="includeLimited">
-          <label class="custom-control-label" for="includeLimited">한정 캐릭터를 기본 캐릭터 이름으로 검색 허용</label>
+          <input type="checkbox" class="custom-control-input" id="searchLimitedByBasicName">
+          <label class="custom-control-label" for="searchLimitedByBasicName">한정 캐릭터를 기본 캐릭터 이름으로 검색 허용</label>
         </div>
       </div>
       <div class="form-group col-md-6">
@@ -51,7 +51,7 @@
     <h3>검색결과:</h3>
 
     <ul id="sarenList" class="list-group">
-      <li id="사렌" class="list-group-item text-center">사렌 (430)</li>
+      <li id="사렌" class="list-group-item list-group-item-dark text-center">사렌 (사렌과의 거리: 0)</li>
     </ul>
 
   </div>
@@ -68,7 +68,35 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>준비중</p>
+
+          <div class="form row">
+            <div class="form-group col-md-12">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary active">
+                  <input type="radio" name="displayCharactersByClickFilter" id="displayAll" autocomplete="off" checked> 모두
+                </label>
+                <label class="btn btn-outline-primary">
+                  <input type="radio" name="displayCharactersByClickFilter" id="displayFront" autocomplete="off"> 전열
+                </label>
+                <label class="btn btn-outline-primary">
+                  <input type="radio" name="displayCharactersByClickFilter" id="displayMiddle" autocomplete="off"> 중열
+                </label>
+                <label class="btn btn-outline-primary">
+                  <input type="radio" name="displayCharactersByClickFilter" id="displayBack" autocomplete="off"> 후열
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form row">
+              <div id="inputByClickCheckboxes" class="form-group col-md-12">
+                <div id="check리마container" class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="check리마">
+                  <label class="custom-control-label" for="check리마">리마</label>
+                </div>
+              </div>
+          </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>

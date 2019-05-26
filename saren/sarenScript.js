@@ -1,7 +1,12 @@
 
 // load HTML objects
 var inputByText = document.getElementById("inputByText");
-var includeLimited = document.getElementById("includeLimited");
+var inputByClick = document.getElementById("inputByClick");
+var searchLimitedByBasicName = document.getElementById("searchLimitedByBasicName");
+var displayAll = document.getElementById("displayAll");
+var displayFront = document.getElementById("displayFront");
+var displayMiddle = document.getElementById("displayMiddle");
+var displayBack = document.getElementById("displayBack");
 var sarenList = document.getElementById("sarenList");
 var backButton = document.getElementById("backButton");
 
@@ -9,8 +14,10 @@ var characterInputByText;
 var characterInputByClick;
 var characterPositionsTable;
 var characterTitlesMap = new Map;
+var characterTitlesArray = [];
 var characterPositionsMap = new Map;
 var characterRelativePositionsMap = new Map;
+var characterLocationsMap = new Map;
 var searchedCharacters = [];
 var displayedCharacters = [];
 
@@ -63,7 +70,7 @@ function updateList(keywordsArray) {
     var includesKeyword = 0;
 
     // search for the character titles given the input, when allowing limited character search with basic names
-    if(includeLimited.checked == true) {
+    if(searchLimitedByBasicName.checked == true) {
 
         for(var j=0; j < characterPositionsTable.length; j++) {
             includesKeyword = 0;
@@ -134,7 +141,9 @@ function highlightList() {
     var liClosestCharacter = document.getElementById(displayedCharactersTitlesArray[minIndex]);
     // highlight saren and closest character
     liSaren.className = "list-group-item list-group-item-dark text-center";
-    liClosestCharacter.className = "list-group-item list-group-item-success text-center font-weight-bold";
+    if(displayedCharacters.length > 1) {
+        liClosestCharacter.className = "list-group-item list-group-item-success text-center font-weight-bold";
+    }
 }
 
 // load character position map after page load
@@ -150,16 +159,35 @@ window.onload = function() {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: function(results) {
-          // save character position table
-          characterPositionsTable = results.data;
-          // fill in the maps using the table
-          characterPositionsMap.clear();
-          characterTitlesMap.clear();
-          for(var j=0; j < characterPositionsTable.length; j++) {
+
+            // save character position table
+            characterPositionsTable = results.data;
+
+            // fill in the maps using the table
+            characterPositionsMap.clear();
+            characterTitlesMap.clear();
+            for(var j=0; j < characterPositionsTable.length; j++) {
               characterTitlesMap.set(characterPositionsTable[j]["charKeywords"], characterPositionsTable[j]["charTitle"]);
               characterPositionsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charPosition"]);
               characterRelativePositionsMap.set(characterPositionsTable[j]["charTitle"], Math.abs(Number(characterPositionsTable[j]["charPosition"]) - 430));
-          }
+              characterLocationsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charLocation"]);
+            }
+
+            ////////// initialize choose-character-by-click list //////////
+
+            // create charTitles array
+            characterTitlesArray = Array.from(characterPositionsMap.keys()).sort();
+
+            // initialize the html code
+            var checkboxHtml = '';
+            // add characters to the checkbox list
+            for(var j=0; j < characterTitlesArray.length; j++) {
+                checkboxHtml += '<div id="check' + characterTitlesArray[j] + 'container" class="custom-control custom-checkbox">';
+                checkboxHtml += '<input type="checkbox" class="custom-control-input" id="check' + characterTitlesArray[j] +'">';
+                checkboxHtml += '<label class="custom-control-label" for="check' + characterTitlesArray[j] + '">' + characterTitlesArray[j] + '</label></div>';
+            }
+            $("#inputByClickCheckboxes").html(checkboxHtml);
+
         }
     });
 
@@ -186,6 +214,72 @@ inputByText.addEventListener("keydown", function() {
     updateList(characterInputByText);
 
 })
+
+searchLimitedByBasicName.addEventListener("click", function() {
+
+    // read characters
+    characterInputByText = inputByText.value.split(" ");
+
+    // remove any empty entry
+    characterInputByText = characterInputByText.filter(function(value, index, arr) { return value != ""; })
+
+    // update character positions list with the keywords
+    updateList(characterInputByText);
+
+})
+
+// display characters according to their location categories
+displayAll.addEventListener("click", function() {
+
+    var characterCheckBox;
+
+    // display all characters
+    for(var j=0; j < characterTitlesArray.length; j++) {
+        characterCheckBox = document.getElementById("check" + characterTitlesArray[j] + "container");
+        characterCheckBox.hidden = false;
+    }
+
+})
+
+// display characters according to their location categories
+displayFront.addEventListener("click", function() {
+
+    var characterCheckbox;
+
+    // display front (location == 0) characters
+    for(var j=0; j < characterTitlesArray.length; j++) {
+        characterCheckbox = document.getElementById("check" + characterTitlesArray[j] + "container");
+        characterCheckbox.hidden = (characterLocationsMap.get(characterTitlesArray[j]) != 0);
+    }
+
+})
+
+// display characters according to their location categories
+displayMiddle.addEventListener("click", function() {
+
+    var characterCheckbox;
+
+    // display middle (location == 1) characters
+    for(var j=0; j < characterTitlesArray.length; j++) {
+        characterCheckbox = document.getElementById("check" + characterTitlesArray[j] + "container");
+        characterCheckbox.hidden = (characterLocationsMap.get(characterTitlesArray[j]) != 1);
+    }
+
+})
+
+// display characters according to their location categories
+displayBack.addEventListener("click", function() {
+
+    var characterCheckbox;
+
+    // display back (location == 2) characters
+    for(var j=0; j < characterTitlesArray.length; j++) {
+        characterCheckbox = document.getElementById("check" + characterTitlesArray[j] + "container");
+        characterCheckbox.hidden = (characterLocationsMap.get(characterTitlesArray[j]) != 2);
+    }
+
+})
+
 
 // back to index.html
 backButton.addEventListener("click", function() {
