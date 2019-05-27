@@ -70,8 +70,8 @@
         <div class="modal-body">
 
           <div class="form row">
-            <div class="form-group col-md-12">
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <div class="form-group col-md-6">
+              <div id="clickCharactersDisplay" class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-outline-primary active">
                   <input type="radio" name="displayCharactersByClickFilter" id="displayAll" autocomplete="off" checked> 모두
                 </label>
@@ -85,6 +85,9 @@
                   <input type="radio" name="displayCharactersByClickFilter" id="displayBack" autocomplete="off"> 후열
                 </label>
               </div>
+            </div>
+            <div class="form-group col-md-6">
+              <button id="clickCharactersInitialize" type="button" class="btn btn-danger">선택 초기화</button>
             </div>
           </div>
 
@@ -100,7 +103,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-          <button type="button" class="btn btn-primary">확인</button>
         </div>
       </div>
     </div>
