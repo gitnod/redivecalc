@@ -14,6 +14,8 @@ var backButton = document.getElementById("backButton");
 var characterPositionsTable;
 var characterTitlesMap = new Map;
 var characterTitlesArray = [];
+var characterLabelsMap = new Map;
+var characterLabelsArray = [];
 var characterPositionsMap = new Map;
 var characterRelativePositionsMap = new Map;
 var characterLocationsMap = new Map;
@@ -202,6 +204,7 @@ window.onload = function() {
             characterTitlesMap.clear();
             for(var j=0; j < characterPositionsTable.length; j++) {
               characterTitlesMap.set(characterPositionsTable[j]["charKeywords"], characterPositionsTable[j]["charTitle"]);
+              characterTitlesArray.push(characterPositionsTable[j]["charTitle"]);
               characterPositionsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charPosition"]);
               characterRelativePositionsMap.set(characterPositionsTable[j]["charTitle"], Math.abs(Number(characterPositionsTable[j]["charPosition"]) - 430));
               characterLocationsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charLocation"]);
@@ -209,16 +212,28 @@ window.onload = function() {
 
             ////////// initialize choose-character-by-click list //////////
 
-            // create charTitles array
-            characterTitlesArray = Array.from(characterPositionsMap.keys()).sort();
+            // initialize character labels
+            var characterLabel = "";
+            for(var j=0; j < characterPositionsTable.length; j++) {
+                characterLabel = characterPositionsTable[j]["charKeywords"].split(" ");
+                if(characterLabel.length == 1) {
+                    characterLabel = characterLabel[0];
+                } else {
+                    characterLabel = characterLabel[0] + "(" + characterLabel[1] + ")";
+                }
+                characterLabelsArray.push(characterLabel);
+                characterLabelsMap.set(characterLabel, j);
+            }
+            characterLabelsArray.sort();
 
-            // initialize the html code
-            var checkboxHtml = '';
             // add characters to the checkbox list
-            for(var j=0; j < characterTitlesArray.length; j++) {
-                checkboxHtml += '<div id="check' + characterTitlesArray[j] + 'container" class="custom-control custom-checkbox">';
-                checkboxHtml += '<input type="checkbox" class="custom-control-input" id="check' + characterTitlesArray[j] +'">';
-                checkboxHtml += '<label class="custom-control-label" for="check' + characterTitlesArray[j] + '">' + characterTitlesArray[j] + '</label></div>';
+            var checkboxHtml = '';
+            var charTitle = '';
+            for(var j=0; j < characterLabelsArray.length; j++) {
+                charTitle = characterTitlesArray[characterLabelsMap.get(characterLabelsArray[j])];
+                checkboxHtml += '<div id="check' + charTitle + 'container" class="custom-control custom-checkbox">';
+                checkboxHtml += '<input type="checkbox" class="custom-control-input" id="check' + charTitle +'">';
+                checkboxHtml += '<label class="custom-control-label" for="check' + charTitle + '">' + characterLabelsArray[j] + '</label></div>';
             }
             $("#inputByClickCheckboxes").html(checkboxHtml);
 
@@ -255,7 +270,6 @@ $("#clickCharacters").on("hidden.bs.modal", function(e) {
     readCharactersAndUpdateList();
 
 })
-
 
 // display characters according to their location categories
 $("#clickCharactersDisplay :input").change(function() {
