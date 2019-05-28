@@ -135,7 +135,7 @@ function searchSkillTarget(searchedCharactersArray, searchedPositions) {
 window.onload = function() {
 
     // locate character position table file
-    fileURLString = "https://raw.githubusercontent.com/gitnod/redivecalc/master/data/characterPositionsTable.csv";
+    fileURLString = "https://raw.githubusercontent.com/gitnod/redivecalc/gh-pages/data/characterPositionsTable.csv";
 
     // read character position table
     Papa.parse(fileURLString, {
