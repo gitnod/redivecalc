@@ -176,11 +176,21 @@ inputByText.addEventListener("keydown", function() {
     // suppress enter key from submitting the form
     if(event.key == "Enter") {
         event.preventDefault();
+        sarenList.focus();
         sarenList.scrollIntoView();
     }
 
     searchCharactersAndUpdateList();
 
+})
+
+// change character list table when the 'submit' action is fired in mobile devices
+$("#inputByText").submit(function() {
+
+    sarenList.focus();
+    sarenList.scrollIntoView();
+    searchCharactersAndUpdateList();
+    
 })
 
 // change character list table when the text input option changes
