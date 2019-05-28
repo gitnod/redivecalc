@@ -176,6 +176,7 @@ inputByText.addEventListener("keydown", function() {
     // suppress enter key from submitting the form
     if(event.key == "Enter") {
         event.preventDefault();
+        sarenList.focus();
     }
 
     searchCharactersAndUpdateList();

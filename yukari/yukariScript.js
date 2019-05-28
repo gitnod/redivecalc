@@ -169,9 +169,10 @@ window.onload = function() {
 // change character list table when the text input changes
 inputByText.addEventListener("keydown", function() {
 
-    // suppress enter key from submitting the form
+    // if enter key, move focus
     if(event.key == "Enter") {
         event.preventDefault();
+        selectedParty.focus();
     }
 
     searchCharactersAndUpdateResults();
