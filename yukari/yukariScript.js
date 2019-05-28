@@ -63,7 +63,7 @@ function searchCharactersAndUpdateResults() {
 
     // check if the party size is 5 and return the result. If not, return an error
     if(searchedCharacters.length != 5) {
-        selectedCharacter.innerHTML = '결과: 계산을 위해서는 5인이 파티를 구성해야 합니다.'
+        selectedCharacter.innerHTML = '계산을 위해서는 5인이 파티를 구성해야 합니다.'
     } else {
         selectedCharacter.innerHTML = 'TP 주유 캐릭터: <br><strong>' + searchSkillTarget(searchedCharactersArray, searchedPositions) + '</strong>';
     }
