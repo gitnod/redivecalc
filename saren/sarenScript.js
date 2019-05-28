@@ -14,8 +14,6 @@ var backButton = document.getElementById("backButton");
 var characterPositionsTable;
 var characterTitlesMap = new Map;
 var characterTitlesArray = [];
-var characterLabelsMap = new Map;
-var characterLabelsArray = [];
 var characterPositionsMap = new Map;
 var characterRelativePositionsMap = new Map;
 var characterLocationsMap = new Map;
@@ -61,40 +59,7 @@ function clearList() {
 }
 
 // update the character positions list with the array
-function updateList(keywordsArray) {
-
-    // initialize list of searched characters
-    var searchedCharacters = [];
-
-    // initialize keyword inclusion indicator
-    var includesKeyword = 0;
-
-    // search for the character titles given the input, when allowing limited character search with basic names
-    if(searchLimitedByBasicName.checked == true) {
-
-        for(var j=0; j < characterPositionsTable.length; j++) {
-            includesKeyword = 0;
-            for(var k=0; k < keywordsArray.length; k++) {
-                includesKeyword += characterPositionsTable[j]["charKeywords"].includes(keywordsArray[k]);
-            }
-            if(includesKeyword > 0) {
-                searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charKeywords"]));
-            }
-        }
-
-    } else {
-
-        for(var j=0; j < characterPositionsTable.length; j++) {
-            includesKeyword = 0;
-            for(var k=0; k < keywordsArray.length; k++) {
-                includesKeyword += characterPositionsTable[j]["charAttributes"].includes(keywordsArray[k]);
-            }
-            if(includesKeyword > 0) {
-                searchedCharacters.push(characterTitlesMap.get(characterPositionsTable[j]["charKeywords"]));
-            }
-        }
-
-    }
+function updateList(searchedCharacters) {
 
     // add saren to the character titles list
     if(searchedCharacters.includes("사렌") == false) {
@@ -146,40 +111,24 @@ function highlightList() {
     }
 }
 
-// read character lists from text input form and the character checkboxes
-function readCharactersAndUpdateList() {
+// search character lists from text input form and the character checkboxes
+function searchCharactersAndUpdateList() {
 
-    // read characters from the text input form
+    // read text entries from the text input form
     var characterInput = inputByText.value.split(" ");
-
-    // combine it with the character list from the checkboxes
-    characterInput = characterInput.concat(readCharactersFromCheckboxes());
 
     // remove any empty entry
     characterInput = characterInput.filter(function(value, index, arr) { return value != ""; })
 
-    // update character positions list with the keywords
-    updateList(characterInput);
+    // search characters with the text input
+    var searchedCharacters = searchRediveCharactersByKeywords(characterInput, characterPositionsTable, characterTitlesMap, searchLimitedByBasicName.checked);
 
-}
+    // combine it with the character list from the checkboxes
+    searchedCharacters = searchedCharacters.concat(searchRediveCharactersFromCheckboxes(characterTitlesArray));
 
-// read character lists from the character click checkboxes
-function readCharactersFromCheckboxes() {
+    // update character positions list with the searched characters
+    updateList(searchedCharacters);
 
-    // initialize character array
-    var characterInputByClick = [];
-
-    // add all checked characters to the array
-    var characterCheckbox;
-    for(var j=0; j < characterTitlesArray.length; j++) {
-        characterCheckbox = document.getElementById("check" + characterTitlesArray[j]);
-        if(characterCheckbox.checked == true) {
-            characterInputByClick.push(characterTitlesArray[j]);
-        }
-    }
-
-    // return character inputs
-    return characterInputByClick;
 }
 
 // load character position map after page load
@@ -210,32 +159,8 @@ window.onload = function() {
               characterLocationsMap.set(characterPositionsTable[j]["charTitle"], characterPositionsTable[j]["charLocation"]);
             }
 
-            ////////// initialize choose-character-by-click list //////////
-
-            // initialize character labels
-            var characterLabel = "";
-            for(var j=0; j < characterPositionsTable.length; j++) {
-                characterLabel = characterPositionsTable[j]["charKeywords"].split(" ");
-                if(characterLabel.length == 1) {
-                    characterLabel = characterLabel[0];
-                } else {
-                    characterLabel = characterLabel[0] + "(" + characterLabel[1] + ")";
-                }
-                characterLabelsArray.push(characterLabel);
-                characterLabelsMap.set(characterLabel, j);
-            }
-            characterLabelsArray.sort();
-
-            // add characters to the checkbox list
-            var checkboxHtml = '';
-            var charTitle = '';
-            for(var j=0; j < characterLabelsArray.length; j++) {
-                charTitle = characterTitlesArray[characterLabelsMap.get(characterLabelsArray[j])];
-                checkboxHtml += '<div id="check' + charTitle + 'container" class="custom-control custom-checkbox">';
-                checkboxHtml += '<input type="checkbox" class="custom-control-input" id="check' + charTitle +'">';
-                checkboxHtml += '<label class="custom-control-label" for="check' + charTitle + '">' + characterLabelsArray[j] + '</label></div>';
-            }
-            $("#inputByClickCheckboxes").html(checkboxHtml);
+            // initialize choose-character-by-click list
+            initializeCheckboxes("inputByClickCheckboxes", characterPositionsTable);
 
         }
     });
@@ -253,21 +178,21 @@ inputByText.addEventListener("keydown", function() {
         event.preventDefault();
     }
 
-    readCharactersAndUpdateList();
+    searchCharactersAndUpdateList();
 
 })
 
 // change character list table when the text input option changes
 searchLimitedByBasicName.addEventListener("click", function() {
 
-    readCharactersAndUpdateList();
+    searchCharactersAndUpdateList();
 
 })
 
 // change character list table when the character click dialog is dismissed
 $("#clickCharacters").on("hidden.bs.modal", function(e) {
 
-    readCharactersAndUpdateList();
+    searchCharactersAndUpdateList();
 
 })
 
