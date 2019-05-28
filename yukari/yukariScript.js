@@ -89,9 +89,9 @@ function searchSkillTarget(searchedCharactersArray, searchedPositions) {
     } else if(searchedCharactersArray[2] == "유카리") {
 
         if(searchedCharactersArray[4] == "쿄우카") {
-            if(searchedPositions[0] > 225) {
+            if(searchedPositions[0] >= 225) {
                 return searchedCharactersArray[3];
-            } else if(searchedPositions[0] < 215) {
+            } else if(searchedPositions[0] <= 215) {
                 return searchedCharactersArray[2];
             }
         }
@@ -103,22 +103,22 @@ function searchSkillTarget(searchedCharactersArray, searchedPositions) {
 
     } else if(searchedCharactersArray[3] == "유카리") {
 
-        if(searchedPositions[2] < 200) {
+        if(searchedPositions[2] <= 200) {
             if(searchedPositions[4] >= 600) {
                 return searchedCharactersArray[2];
             } else {
                 return searchedCharactersArray[3];
             }
-        } else if(searchedPositions[2] > 205) {
+        } else if(searchedPositions[2] >= 205) {
             return searchedCharactersArray[3];
         }
 
     } else {
 
-        if(searchedPositions[2] < 160 && searchedPositions[3] < 200) {
+        if(searchedPositions[2] <= 160 && searchedPositions[3] <= 200) {
             return searchedCharactersArray[3];
         }
-        if(searchedPositions[2] > 162) {
+        if(searchedPositions[2] >= 162) {
             return searchedCharactersArray[4];
         }
 
