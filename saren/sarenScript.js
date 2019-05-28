@@ -105,7 +105,7 @@ function highlightList() {
     var liSaren = document.getElementById("사렌");
     var liClosestCharacter = document.getElementById(displayedCharactersTitlesArray[minIndex]);
     // highlight saren and closest character
-    liSaren.className = "list-group-item list-group-item-dark text-center";
+    liSaren.className = "list-group-item list-group-item-light text-center";
     if(displayedCharacters.length > 1) {
         liClosestCharacter.className = "list-group-item list-group-item-success text-center font-weight-bold";
     }
