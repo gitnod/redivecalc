@@ -172,21 +172,10 @@ inputByText.addEventListener("keydown", function() {
     // if enter key, move focus
     if(event.key == "Enter") {
         event.preventDefault();
-        selectedParty.focus();
-        selectedParty.scrollIntoView();
     }
 
     searchCharactersAndUpdateResults();
 
-})
-
-// change character list table when the 'submit' action is fired in mobile devices
-$("#inputByText").submit(function() {
-
-    selectedParty.focus();
-    selectedParty.scrollIntoView();
-    searchCharactersAndUpdateResults();
-    
 })
 
 // change character list table when the text input option changes
