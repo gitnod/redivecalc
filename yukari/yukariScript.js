@@ -172,7 +172,7 @@ inputByText.addEventListener("keydown", function() {
     // if enter key, move focus
     if(event.key == "Enter") {
         event.preventDefault();
-        selectedParty.focus();
+        selectedParty.scrollIntoView();
     }
 
     searchCharactersAndUpdateResults();
