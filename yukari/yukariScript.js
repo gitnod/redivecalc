@@ -38,12 +38,6 @@ function searchCharactersAndUpdateResults() {
         searchedCharacters.push("유카리");
     }
 
-    // read character's positions
-    var searchedPositions = [];
-    for(var j=0; j < searchedCharacters.length; j++) {
-        searchedPositions.push(characterPositionsMap.get(searchedCharacters[j]));
-    }
-
     // initialize character position dictionary
     var searchedCharactersDictionary = new Object;
 
@@ -52,10 +46,12 @@ function searchCharactersAndUpdateResults() {
         searchedCharactersDictionary[characterPositionsMap.get(searchedCharacters[j])] = searchedCharacters[j];
     }
 
-    // create character lists with the dictionary
-    searchedCharactersArray = [];
+    // create character lists and positions list with the dictionary
+    var searchedCharactersArray = [];
+    var searchedPositions = [];
     for(var key in searchedCharactersDictionary) {
         searchedCharactersArray.push(searchedCharactersDictionary[key]);
+        searchedPositions.push(key);
     }
 
     // update the party display
