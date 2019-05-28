@@ -59,13 +59,13 @@ function searchCharactersAndUpdateResults() {
     }
 
     // update the party display
-    selectedParty.innerHTML = '현재 파티: ' + searchedCharactersArray.join(", ");
+    selectedParty.innerHTML = '현재 파티: <br><strong>' + searchedCharactersArray.join(", ") + '</strong>';
 
     // check if the party size is 5 and return the result. If not, return an error
     if(searchedCharacters.length != 5) {
         selectedCharacter.innerHTML = '결과: 계산을 위해서는 5인이 파티를 구성해야 합니다.'
     } else {
-        selectedCharacter.innerHTML = '전투 시작시 TP 주유 캐릭터: ' + searchSkillTarget(searchedCharactersArray, searchedPositions);
+        selectedCharacter.innerHTML = 'TP 주유 캐릭터: <br><strong>' + searchSkillTarget(searchedCharactersArray, searchedPositions) + '</strong>';
     }
 
 }
