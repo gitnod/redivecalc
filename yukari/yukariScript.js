@@ -38,21 +38,6 @@ function searchCharactersAndUpdateResults() {
         searchedCharacters.push("유카리");
     }
 
-    // update the party display
-    selectedParty.innerHTML = '현재 파티: ' + searchedCharacters.join(", ");
-
-    // check if the party size is 5. If not, return an error
-    if(searchedCharacters.length != 5) {
-        selectedCharacter.innerHTML = '결과: 계산을 위해서는 5인이 파티를 구성해야 합니다.'
-    } else {
-        selectedCharacter.innerHTML = '전투 시작시 TP 주유 캐릭터: ' + searchSkillTarget(searchedCharacters);
-    }
-
-}
-
-// search yukari's still target from the character list
-function searchSkillTarget(searchedCharacters) {
-
     // read character's positions
     var searchedPositions = [];
     for(var j=0; j < searchedCharacters.length; j++) {
@@ -72,6 +57,21 @@ function searchSkillTarget(searchedCharacters) {
     for(var key in searchedCharactersDictionary) {
         searchedCharactersArray.push(searchedCharactersDictionary[key]);
     }
+
+    // update the party display
+    selectedParty.innerHTML = '현재 파티: ' + searchedCharactersArray.join(", ");
+
+    // check if the party size is 5 and return the result. If not, return an error
+    if(searchedCharacters.length != 5) {
+        selectedCharacter.innerHTML = '결과: 계산을 위해서는 5인이 파티를 구성해야 합니다.'
+    } else {
+        selectedCharacter.innerHTML = '전투 시작시 TP 주유 캐릭터: ' + searchSkillTarget(searchedCharactersArray, searchedPositions);
+    }
+
+}
+
+// search yukari's still target from the character list
+function searchSkillTarget(searchedCharactersArray, searchedPositions) {
 
     // determine skill target
     if(searchedCharactersArray[0] == "유카리") {
@@ -125,7 +125,7 @@ function searchSkillTarget(searchedCharacters) {
         if(searchedPositions[2] > 162) {
             return searchedCharactersArray[4];
         }
-        
+
     }
 
     return "실험값이 없습니다.";
