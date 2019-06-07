@@ -307,17 +307,17 @@ calculateExpenditureButton.addEventListener("click", function() {
 
     // read current levels
     var currentLvlArray = [];
-    currentLvlArray.push(lvlCurrentUb.value);
-    currentLvlArray.push(lvlCurrent1st.value);
-    currentLvlArray.push(lvlCurrent2nd.value);
-    currentLvlArray.push(lvlCurrentEX.value);
+    currentLvlArray.push(Number(lvlCurrentUb.value));
+    currentLvlArray.push(Number(lvlCurrent1st.value));
+    currentLvlArray.push(Number(lvlCurrent2nd.value));
+    currentLvlArray.push(Number(lvlCurrentEX.value));
 
     // read target levels
     var targetLvlArray = [];
-    targetLvlArray.push(lvlTargetUb.value);
-    targetLvlArray.push(lvlTarget1st.value);
-    targetLvlArray.push(lvlTarget2nd.value);
-    targetLvlArray.push(lvlTargetEX.value);
+    targetLvlArray.push(Number(lvlTargetUb.value));
+    targetLvlArray.push(Number(lvlTarget1st.value));
+    targetLvlArray.push(Number(lvlTarget2nd.value));
+    targetLvlArray.push(Number(lvlTargetEX.value));
 
     // check sanity of inputs
     isAdmissible = checkSanityOfLevels(currentLvlArray, targetLvlArray);
@@ -333,17 +333,17 @@ addExpenditureButton.addEventListener("click", function() {
 
     // read current levels
     var currentLvlArray = [];
-    currentLvlArray.push(lvlCurrentUb.value);
-    currentLvlArray.push(lvlCurrent1st.value);
-    currentLvlArray.push(lvlCurrent2nd.value);
-    currentLvlArray.push(lvlCurrentEX.value);
+    currentLvlArray.push(Number(lvlCurrentUb.value));
+    currentLvlArray.push(Number(lvlCurrent1st.value));
+    currentLvlArray.push(Number(lvlCurrent2nd.value));
+    currentLvlArray.push(Number(lvlCurrentEX.value));
 
     // read target levels
     var targetLvlArray = [];
-    targetLvlArray.push(lvlTargetUb.value);
-    targetLvlArray.push(lvlTarget1st.value);
-    targetLvlArray.push(lvlTarget2nd.value);
-    targetLvlArray.push(lvlTargetEX.value);
+    targetLvlArray.push(Number(lvlTargetUb.value));
+    targetLvlArray.push(Number(lvlTarget1st.value));
+    targetLvlArray.push(Number(lvlTarget2nd.value));
+    targetLvlArray.push(Number(lvlTargetEX.value));
 
     // add expenditure info
     addExpenditure(currentLvlArray, targetLvlArray, Number(numberOfCharacters.value));
