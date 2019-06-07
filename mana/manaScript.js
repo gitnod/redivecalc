@@ -53,8 +53,8 @@ function computeManaExpenditure(currentLvl, targetLvl, characters) {
     return manaExpenditure;
 }
 
-// add expenditure to the table and the total expenditure variable
-function addExpenditure(currentLvl, targetLvl, characters) {
+// check sanity of levels
+function checkSanityOfLevels(currentLvl, targetLvl) {
 
     // initialize iterator
     var j=0;
@@ -78,16 +78,36 @@ function addExpenditure(currentLvl, targetLvl, characters) {
     if(lvlCurrentInRange == false) {
 
         resultText.innerHTML = '오류: 현재 스킬 레벨은 최소 1이어야 합니다.';
+        return false;
 
     } else if(lvlTargetInRange == false) {
 
         resultText.innerHTML = '오류: 목표 스킬 레벨은 최대 ' + manaSkillTable.length + '이어야 합니다.';
+        return false;
 
     } else if(lvlTargetLargerThanCurrent == false) {
 
         resultText.innerHTML = '오류: 목표 스킬 레벨은 현재 스킬 레벨보다 낮아야 합니다.';
+        return false;
 
     } else {
+
+        return true;
+
+    }
+
+}
+
+// add expenditure to the table and the total expenditure variable
+function addExpenditure(currentLvl, targetLvl, characters) {
+
+    // initialize iterator
+    var j=0;
+
+    // check sanity of inputs
+    isAdmissible = checkSanityOfLevels(currentLvl, targetLvl);
+
+    if(isAdmissible == true) {
 
         // incrase number of rows by 1
         resultTableLength += 1;
@@ -299,8 +319,14 @@ calculateExpenditureButton.addEventListener("click", function() {
     targetLvlArray.push(lvlTarget2nd.value);
     targetLvlArray.push(lvlTargetEX.value);
 
+    // check sanity of inputs
+    isAdmissible = checkSanityOfLevels(currentLvlArray, targetLvlArray);
+
     // display result
-    resultText.innerHTML = '소비 마나: ' + computeManaExpenditure(currentLvlArray, targetLvlArray, 1);
+    if(isAdmissible == true) {
+        resultText.innerHTML = '소비 마나: ' + computeManaExpenditure(currentLvlArray, targetLvlArray, 1);
+    }
+    
 })
 
 addExpenditureButton.addEventListener("click", function() {
