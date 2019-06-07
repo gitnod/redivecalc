@@ -1,5 +1,10 @@
 
 // load HTML objects
+var desc = document.getElementById("desc");
+
+var calcTypeSimple = document.getElementById("calcTypeSimple");
+var calcTypeAdvanced = document.getElementById("calcTypeAdvanced");
+
 var lvlCurrentRestrict = document.getElementById("lvlCurrentRestrict");
 var lvlCurrentUb = document.getElementById("lvlCurrentUb");
 var lvlCurrent1st = document.getElementById("lvlCurrent1st");
@@ -10,10 +15,16 @@ var lvlTargetUb = document.getElementById("lvlTargetUb");
 var lvlTarget1st = document.getElementById("lvlTarget1st");
 var lvlTarget2nd = document.getElementById("lvlTarget2nd");
 var lvlTargetEX = document.getElementById("lvlTargetEX");
+
+var calcRowSimple = document.getElementById("calcRowSimple");
+var calcRowAdvanced = document.getElementById("calcRowAdvanced");
+var calculateExpenditureButton = document.getElementById("calculateExpenditureButton");
 var numberOfCharacters = document.getElementById("numberOfCharacters");
 var addExpenditureButton = document.getElementById("addExpenditureButton");
-var expenditureTableBody = document.getElementById("expenditureTableBody");
-var result = document.getElementById("result");
+
+var resultText = document.getElementById("resultText");
+var resultTable = document.getElementById("resultTable");
+var resultTableBody = document.getElementById("resultTableBody");
 var backButton = document.getElementById("backButton");
 
 var manaSkillTable;
@@ -59,35 +70,43 @@ function addExpenditure(currentLvl, targetLvl, characters) {
     }
 
     if(lvlCurrentInRange = false) {
-        dd
+
+        resultText.innerHTML = '현재 스킬 레벨은 최소 1이어야 합니다.';
+
+    } else if(lvlTargetInRange = false) {
+
+        resultText.innerHTML = '목표 스킬 레벨은 최대 ' + manaSkillTable.length + '이어야 합니다.';
+
+    } else {
+
+        // read number of added rows
+        rowNumber = lvlTableRows.length + 1;
+
+        // initialize html info
+        var lvlTableRowHtml = '';
+
+        // fill in the table rows
+        lvlTableRowHtml += '<tr>';
+        for(j=0; j<4; j++) {
+            lvlTableRowHtml += '<td>' + currentLvl[j] + '</td>';
+        }
+        for(j=0; j<4; j++) {
+            lvlTableRowHtml += '<td>' + targetLvl[j] + '</td>';
+        }
+        lvlTableRowHtml += '<td>' + characters + '</td>';
+        lvlTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger">삭제</button></td>';
+        lvlTableRowHtml += '</tr>';
+
+        // add table row to the table rows list
+        lvlTableRows.push(lvlTableRowHtml);
+
+        // add mana expenditure
+        manaExpenditures.push(computeManaExpenditure(currentLvl, targetLvl, characters));
+
+        // update display
+        updateExpenditure();
+
     }
-
-    // read number of added rows
-    rowNumber = lvlTableRows.length + 1;
-
-    // initialize html info
-    var lvlTableRowHtml = '';
-
-    // fill in the table rows
-    lvlTableRowHtml += '<tr>';
-    for(j=0; j<4; j++) {
-        lvlTableRowHtml += '<td>' + currentLvl[j] + '</td>';
-    }
-    for(j=0; j<4; j++) {
-        lvlTableRowHtml += '<td>' + targetLvl[j] + '</td>';
-    }
-    lvlTableRowHtml += '<td>' + characters + '</td>';
-    lvlTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger">삭제</button></td>';
-    lvlTableRowHtml += '</tr>';
-
-    // add table row to the table rows list
-    lvlTableRows.push(lvlTableRowHtml);
-
-    // add mana expenditure
-    manaExpenditures.push(computeManaExpenditure(currentLvl, targetLvl, characters));
-
-    // update display
-    updateExpenditure();
 
 }
 
@@ -113,10 +132,10 @@ function updateExpenditure() {
     for(var j=0; j<lvlTableRows.length; j++) {
         lvlTableHtml += lvlTableRows[j];
     }
-    $("#expenditureTableBody").html(lvlTableHtml);
+    $("#resultTableBody").html(lvlTableHtml);
 
     // update total expenditure
-    result.innerHTML = '소비 마나: ' + manaExpenditures.reduce(function(a,b) { return a+b; });
+    resultText.innerHTML = '소비 마나: ' + manaExpenditures.reduce(function(a,b) { return a+b; });
 }
 
 // load character position map after page load
@@ -140,6 +159,50 @@ window.onload = function() {
     });
 
 }
+
+// activate simple calcucation mode
+calcTypeSimple.addEventListener("click", function() {
+
+    // update calcType button aesthetics
+    calcTypeSimple.className = "btn btn-success btn-block";
+    calcTypeAdvanced.className = "btn btn-outline-success btn-block";
+
+    // update calculation button row
+    calcRowSimple.hidden = false;
+    calcRowAdvanced.hidden = true;
+
+    // hide result table
+    resultTable.hidden = true;
+
+    // update description
+    desc.innerHTML = '캐릭터 하나의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.';
+
+    // trigger calc button click
+    $('#calculateExpenditureButton').trigger("click");
+})
+
+// activate simple calcucation mode
+calcTypeAdvanced.addEventListener("click", function() {
+
+    // update calcType button aesthetics
+    calcTypeSimple.className = "btn btn-outline-success btn-block";
+    calcTypeAdvanced.className = "btn btn-success btn-block";
+
+    // update calculation button row
+    calcRowSimple.hidden = true;
+    calcRowAdvanced.hidden = false;
+
+    // unhide result table
+    resultTable.hidden = false;
+
+    // update description
+    desc.innerHTML = '여러 캐릭터들의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.';
+
+    // update table
+    updateExpenditure();
+})
+
+
 
 // toggle restricted input status
 lvlCurrentRestrict.addEventListener("change", function() {
@@ -199,6 +262,26 @@ lvlTargetUb.addEventListener("change", function() {
         lvlTargetEX.value = lvlTargetUb.value;
     }
 
+})
+
+calculateExpenditureButton.addEventListener("click", function() {
+
+    // read current levels
+    var currentLvlArray = [];
+    currentLvlArray.push(lvlCurrentUb.value);
+    currentLvlArray.push(lvlCurrent1st.value);
+    currentLvlArray.push(lvlCurrent2nd.value);
+    currentLvlArray.push(lvlCurrentEX.value);
+
+    // read target levels
+    var targetLvlArray = [];
+    targetLvlArray.push(lvlTargetUb.value);
+    targetLvlArray.push(lvlTarget1st.value);
+    targetLvlArray.push(lvlTarget2nd.value);
+    targetLvlArray.push(lvlTargetEX.value);
+
+    // display result
+    resultText.innerHTML = '소비 마나: ' + computeManaExpenditure(currentLvlArray, targetLvlArray, 1);
 })
 
 addExpenditureButton.addEventListener("click", function() {
