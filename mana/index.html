@@ -21,7 +21,7 @@
 
   <h2 align="center">마나 소비 계산기</h2>
 
-  <p align="center" id="desc">캐릭터들의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.</p>
+  <p align="center" id="desc">캐릭터 하나의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.</p>
 
   <form>
 
@@ -110,7 +110,7 @@
 
         <div class="form-group col-6">
           <label for="numberOfCharacters">대상 캐릭터 수:</label>
-          <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1">
+          <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1" onfocus="this.select();">
         </div>
   
         <div class="form-group col-6">
@@ -124,7 +124,7 @@
 
   <div class="jumbotron">
 
-    <h3 id="resultText">소비 마나: 0</h3><br>
+    <h3 id="resultText">소비 마나: 0</h3>
 
     <table id="resultTable" class="table table-sm table-bordered text-center table-responsive-md" hidden>
       <thead>
