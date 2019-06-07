@@ -34,7 +34,7 @@
               <th colspan="4">
                   현재 레벨 &nbsp;(&nbsp;&nbsp;
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict">
+                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict" checked>
                     <label class="custom-control-label" for="lvlCurrentRestrict">일괄입력</label>
                   </div>)
               </th>
@@ -49,9 +49,9 @@
           <tbody>
             <tr>
               <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
             </tr>
           </tbody>
         </table>
@@ -64,7 +64,7 @@
               <th colspan="4">
                 목표 레벨 &nbsp;(&nbsp;&nbsp;
                 <div class="custom-control custom-checkbox custom-control-inline">
-                  <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict">
+                  <input type="checkbox" class="custom-control-input" id="lvlTargetRestrict" checked>
                   <label class="custom-control-label" for="lvlTargetRestrict">일괄입력</label>
                 </div>)
               </th>
@@ -79,9 +79,9 @@
           <tbody>
             <tr>
               <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
             </tr>
           </tbody>
         </table>
@@ -99,10 +99,10 @@
               <th></th>
             </tr>
           </thead>
-          <tbody id="lvlTableBody">
+          <tbody>
             <tr>
               <td><input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1"></td>
-              <td><button type="button" id="addLvlInfo" class="btn btn-primary btn-block">추가</button></td>
+              <td><button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button></td>
             </tr>
           </tbody>
         </table>
@@ -134,10 +134,10 @@
           <th scope="col">스킬 2</th>
           <th scope="col">스킬 EX</th>
           <th scope="col">캐릭터 수</th>
-          <th scope="col">행동</th>
+          <th scope="col"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id='expenditureTableBody'>
         <tr>
           <td></td>
           <td></td>
@@ -148,7 +148,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td><button type="button" id="deleteLvlInfo1" class="btn btn-danger btn-block">삭제</button></td>
+          <td><!-- <button type="button" id="deleteLvlInfo1" class="btn btn-danger">삭제</button> --></td>
         </tr>
       </tbody>
     </table>
