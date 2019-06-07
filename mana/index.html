@@ -27,14 +27,14 @@
 
     <div class="form-row">
       
-      <div class="form-group col-md-5">
+      <div class="form-group col-md-6">
         <table class="table table-sm text-center">
           <thead>
             <tr>
               <th colspan="4">
                   현재 레벨 &nbsp;(&nbsp;&nbsp;
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict" checked>
+                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict" checked tabindex="1">
                     <label class="custom-control-label" for="lvlCurrentRestrict">일괄입력</label>
                   </div>)
               </th>
@@ -48,23 +48,23 @@
           </thead>
           <tbody>
             <tr>
-              <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
-              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
-              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1" tabindex="3"></td>
+              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="4"></td>
+              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="5"></td>
+              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="6"></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="form-group col-md-5">
+      <div class="form-group col-md-6">
         <table class="table table-sm text-center">
           <thead>
             <tr>
               <th colspan="4">
                 목표 레벨 &nbsp;(&nbsp;&nbsp;
                 <div class="custom-control custom-checkbox custom-control-inline">
-                  <input type="checkbox" class="custom-control-input" id="lvlTargetRestrict" checked>
+                  <input type="checkbox" class="custom-control-input" id="lvlTargetRestrict" checked tabindex="2">
                   <label class="custom-control-label" for="lvlTargetRestrict">일괄입력</label>
                 </div>)
               </th>
@@ -78,34 +78,27 @@
           </thead>
           <tbody>
             <tr>
-              <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1"></td>
-              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
-              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
-              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1" disabled></td>
+              <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1" tabindex="7"></td>
+              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="8"></td>
+              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="9"></td>
+              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1" disabled tabindex="10"></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="form-group col-md-2">
-        <table class="table table-sm text-center">
-          <thead>
-            <tr>
-              <th>대상</th>
-              <th></th>
-            </tr>
-            <tr>
-              <th>캐릭터 수</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1"></td>
-              <td><button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button></td>
-            </tr>
-          </tbody>
-        </table>
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group col-6">
+        <label for="numberOfCharacters">스킬업 캐릭터 수:</label>
+        <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1">
+      </div>
+
+      <div class="form-group col-6">
+        <label for="addExpenditureButton">목록에 추가:</label>
+        <button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button>
       </div>
 
     </div>
@@ -114,9 +107,9 @@
 
   <div class="jumbotron">
 
-    <h3>스킬 레벨업 목록:</h3>
+    <h3 id="result">소비 마나: 0</h3><br>
 
-    <table class="table table-sm text-center table-responsive-md">
+    <table class="table table-sm table-bordered text-center table-responsive-md">
       <thead>
         <tr>
           <th colspan="4">현재 레벨</th>
@@ -134,7 +127,7 @@
           <th scope="col">스킬 2</th>
           <th scope="col">스킬 EX</th>
           <th scope="col">캐릭터 수</th>
-          <th scope="col"></th>
+          <th scope="col">정보 삭제</th>
         </tr>
       </thead>
       <tbody id='expenditureTableBody'>
@@ -152,12 +145,6 @@
         </tr>
       </tbody>
     </table>
-
-  </div>
-
-  <div class="jumbotron">
-
-    <h3 id="result">소비 마나: 0</h3>
 
   </div>
 
