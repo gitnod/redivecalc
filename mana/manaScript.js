@@ -135,7 +135,11 @@ function updateExpenditure() {
     $("#resultTableBody").html(lvlTableHtml);
 
     // update total expenditure
-    resultText.innerHTML = '소비 마나: ' + manaExpenditures.reduce(function(a,b) { return a+b; });
+    if(manaExpenditures.length == 0) {
+        resultText.innerHTML = '소비 마나: 0';
+    } else {
+        resultText.innerHTML = '소비 마나: ' + manaExpenditures.reduce(function(a,b) { return a+b; });
+    }
 }
 
 // load character position map after page load
