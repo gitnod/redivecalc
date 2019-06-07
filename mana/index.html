@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+
+<!-- based on Bootstrap theme. -->
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>마나 소비 계산기</title>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2 align="center">마나 소비 계산기</h2>
+
+  <p align="center">캐릭터들의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.</p>
+
+  <form>
+
+    <div class="form-row">
+      
+      <div class="form-group col-md-5">
+        <table class="table table-sm text-center">
+          <thead>
+            <tr>
+              <th colspan="4">
+                  현재 레벨 &nbsp;(&nbsp;&nbsp;
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict">
+                    <label class="custom-control-label" for="lvlCurrentRestrict">일괄입력</label>
+                  </div>)
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">UB</th>
+              <th scope="col">스킬 1</th>
+              <th scope="col">스킬 2</th>
+              <th scope="col">스킬 EX</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group col-md-5">
+        <table class="table table-sm text-center">
+          <thead>
+            <tr>
+              <th colspan="4">
+                목표 레벨 &nbsp;(&nbsp;&nbsp;
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict">
+                  <label class="custom-control-label" for="lvlTargetRestrict">일괄입력</label>
+                </div>)
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">UB</th>
+              <th scope="col">스킬 1</th>
+              <th scope="col">스킬 2</th>
+              <th scope="col">스킬 EX</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1"></td>
+              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group col-md-2">
+        <table class="table table-sm text-center">
+          <thead>
+            <tr>
+              <th>대상</th>
+              <th></th>
+            </tr>
+            <tr>
+              <th>캐릭터 수</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="lvlTableBody">
+            <tr>
+              <td><input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1"></td>
+              <td><button type="button" id="addLvlInfo" class="btn btn-primary btn-block">추가</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div class="jumbotron">
+
+    <h3>스킬 레벨업 목록:</h3>
+
+    <table class="table table-sm text-center table-responsive-md">
+      <thead>
+        <tr>
+          <th colspan="4">현재 레벨</th>
+          <th colspan="4">목표 레벨</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+        <tr>
+          <th scope="col">UB</th>
+          <th scope="col">스킬 1</th>
+          <th scope="col">스킬 2</th>
+          <th scope="col">스킬 EX</th>
+          <th scope="col">UB</th>
+          <th scope="col">스킬 1</th>
+          <th scope="col">스킬 2</th>
+          <th scope="col">스킬 EX</th>
+          <th scope="col">캐릭터 수</th>
+          <th scope="col">행동</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><button type="button" id="deleteLvlInfo1" class="btn btn-danger btn-block">삭제</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="jumbotron">
+
+    <h3 id="result">소비 마나: 0</h3>
+
+  </div>
+
+  <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
+
+  <p>마나 소모 표 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a></p>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  <!-- library for loading CSV files -->
+  <script src="../lib/PapaParse/papaparse.min.js"></script>
+
+  <!-- saren calculator script -->
+  <script src="manaScript.js"></script>
+
+</div>
+
+</body>
+
+</html>
