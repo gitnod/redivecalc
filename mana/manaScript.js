@@ -28,8 +28,10 @@ var resultTableBody = document.getElementById("resultTableBody");
 var backButton = document.getElementById("backButton");
 
 var manaSkillTable;
-var lvlTableRows = [];
-var manaExpenditures = [];
+
+var resultTableLength = 0;
+var resultTableRows = new Object;
+var manaExpenditures = new Object;
 
 // compute mana expenditure given current and target skill levels
 function computeManaExpenditure(currentLvl, targetLvl, characters) {
@@ -60,6 +62,7 @@ function addExpenditure(currentLvl, targetLvl, characters) {
     // check current and target levels are in the computable range
     var lvlCurrentInRange = true;
     var lvlTargetInRange = true;
+    var lvlTargetLargerThanCurrent = true;
     for(j=0; j<4; j++) {
         if(currentLvl[j] < 1) {
             lvlCurrentInRange = false;
@@ -67,41 +70,49 @@ function addExpenditure(currentLvl, targetLvl, characters) {
         if(targetLvl[j] > manaSkillTable.length) {
             lvlTargetInRange = false;
         }
+        if(targetLvl[j] < currentLvl[j]) {
+            lvlTargetLargerThanCurrent = false;
+        }
     }
 
-    if(lvlCurrentInRange = false) {
+    if(lvlCurrentInRange == false) {
 
-        resultText.innerHTML = '현재 스킬 레벨은 최소 1이어야 합니다.';
+        resultText.innerHTML = '오류: 현재 스킬 레벨은 최소 1이어야 합니다.';
 
-    } else if(lvlTargetInRange = false) {
+    } else if(lvlTargetInRange == false) {
 
-        resultText.innerHTML = '목표 스킬 레벨은 최대 ' + manaSkillTable.length + '이어야 합니다.';
+        resultText.innerHTML = '오류: 목표 스킬 레벨은 최대 ' + manaSkillTable.length + '이어야 합니다.';
+
+    } else if(lvlTargetLargerThanCurrent == false) {
+
+        resultText.innerHTML = '오류: 목표 스킬 레벨은 현재 스킬 레벨보다 낮아야 합니다.';
 
     } else {
 
-        // read number of added rows
-        rowNumber = lvlTableRows.length + 1;
+        // incrase number of rows by 1
+        resultTableLength += 1;
+        rowNumber = resultTableLength;
 
         // initialize html info
-        var lvlTableRowHtml = '';
+        var resultTableRowHtml = '';
 
         // fill in the table rows
-        lvlTableRowHtml += '<tr>';
+        resultTableRowHtml += '<tr>';
         for(j=0; j<4; j++) {
-            lvlTableRowHtml += '<td>' + currentLvl[j] + '</td>';
+            resultTableRowHtml += '<td>' + currentLvl[j] + '</td>';
         }
         for(j=0; j<4; j++) {
-            lvlTableRowHtml += '<td>' + targetLvl[j] + '</td>';
+            resultTableRowHtml += '<td>' + targetLvl[j] + '</td>';
         }
-        lvlTableRowHtml += '<td>' + characters + '</td>';
-        lvlTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger">삭제</button></td>';
-        lvlTableRowHtml += '</tr>';
+        resultTableRowHtml += '<td>' + characters + '</td>';
+        resultTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger">삭제</button></td>';
+        resultTableRowHtml += '</tr>';
 
         // add table row to the table rows list
-        lvlTableRows.push(lvlTableRowHtml);
+        resultTableRows[rowNumber] = resultTableRowHtml;
 
         // add mana expenditure
-        manaExpenditures.push(computeManaExpenditure(currentLvl, targetLvl, characters));
+        manaExpenditures[rowNumber] = computeManaExpenditure(currentLvl, targetLvl, characters);
 
         // update display
         updateExpenditure();
@@ -114,8 +125,8 @@ function addExpenditure(currentLvl, targetLvl, characters) {
 function deleteExpenditure(rowNumber) {
 
     // delete table row
-    lvlTableRows[rowNumber-1] = '';
-    manaExpenditures[rowNumber-1] = 0;
+    delete resultTableRows[rowNumber];
+    delete manaExpenditures[rowNumber];
 
     // update display
     updateExpenditure();
@@ -126,19 +137,23 @@ function deleteExpenditure(rowNumber) {
 function updateExpenditure() {
     
     // initialize table html
-    var lvlTableHtml = "";
+    var resultTableHtml = "";
 
     // update table
-    for(var j=0; j<lvlTableRows.length; j++) {
-        lvlTableHtml += lvlTableRows[j];
+    for(var key in resultTableRows) {
+        resultTableHtml += resultTableRows[key];
     }
-    $("#resultTableBody").html(lvlTableHtml);
+    $("#resultTableBody").html(resultTableHtml);
 
     // update total expenditure
     if(manaExpenditures.length == 0) {
         resultText.innerHTML = '소비 마나: 0';
     } else {
-        resultText.innerHTML = '소비 마나: ' + manaExpenditures.reduce(function(a,b) { return a+b; });
+        var totalExpenditure = 0;
+        for(var key in manaExpenditures) {
+            totalExpenditure += manaExpenditures[key];
+        }
+        resultText.innerHTML = '소비 마나: ' + totalExpenditure;
     }
 }
 

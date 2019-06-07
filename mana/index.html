@@ -27,10 +27,10 @@
 
     <div class="form-row">
       <div class="form-group col-6">
-        <button type="button" id="calcTypeSimple" class="btn btn-success btn-block">단순 계산</button>
+        <button type="button" id="calcTypeSimple" class="btn btn-success btn-block" tabindex="1">단순 계산</button>
       </div>
       <div class="form-group col-6">
-        <button type="button" id="calcTypeAdvanced" class="btn btn-outline-success btn-block">고급 계산</button>
+        <button type="button" id="calcTypeAdvanced" class="btn btn-outline-success btn-block" tabindex="2">고급 계산</button>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
               <th colspan="4">
                   현재 레벨 &nbsp;(&nbsp;&nbsp;
                   <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict" checked tabindex="1">
+                    <input type="checkbox" class="custom-control-input" id="lvlCurrentRestrict" checked tabindex="3">
                     <label class="custom-control-label" for="lvlCurrentRestrict">일괄입력</label>
                   </div>)
               </th>
@@ -57,10 +57,10 @@
           </thead>
           <tbody>
             <tr>
-              <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" tabindex="3"></td>
-              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="4"></td>
-              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="5"></td>
-              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="6"></td>
+              <td><input id="lvlCurrentUb" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" tabindex="5"></td>
+              <td><input id="lvlCurrent1st" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="6"></td>
+              <td><input id="lvlCurrent2nd" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="7"></td>
+              <td><input id="lvlCurrentEX" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="8"></td>
             </tr>
           </tbody>
         </table>
@@ -73,7 +73,7 @@
               <th colspan="4">
                 목표 레벨 &nbsp;(&nbsp;&nbsp;
                 <div class="custom-control custom-checkbox custom-control-inline">
-                  <input type="checkbox" class="custom-control-input" id="lvlTargetRestrict" checked tabindex="2">
+                  <input type="checkbox" class="custom-control-input" id="lvlTargetRestrict" checked tabindex="4">
                   <label class="custom-control-label" for="lvlTargetRestrict">일괄입력</label>
                 </div>)
               </th>
@@ -87,10 +87,10 @@
           </thead>
           <tbody>
             <tr>
-              <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" tabindex="7"></td>
-              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="8"></td>
-              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="9"></td>
-              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="10"></td>
+              <td><input id="lvlTargetUb" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" tabindex="9"></td>
+              <td><input id="lvlTarget1st" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="10"></td>
+              <td><input id="lvlTarget2nd" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="11"></td>
+              <td><input id="lvlTargetEX" type="number" class="form-control" step="1" min="0" value="1" onfocus="this.select();" disabled tabindex="12"></td>
             </tr>
           </tbody>
         </table>
@@ -124,8 +124,6 @@
 
   <div class="jumbotron">
 
-    <h3 id="resultText">소비 마나: 0</h3>
-
     <table id="resultTable" class="table table-sm table-bordered text-center table-responsive-md" hidden>
       <thead>
         <tr>
@@ -143,7 +141,7 @@
           <th scope="col">스킬 1</th>
           <th scope="col">스킬 2</th>
           <th scope="col">스킬 EX</th>
-          <th scope="col">캐릭터 수</th>
+          <th scope="col">캐릭터</th>
           <th scope="col">행 삭제</th>
         </tr>
       </thead>
@@ -162,6 +160,8 @@
         </tr>
       </tbody>
     </table>
+
+    <h3 id="resultText">소비 마나: 0</h3>
 
   </div>
 
