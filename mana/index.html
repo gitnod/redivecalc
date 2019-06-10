@@ -101,7 +101,7 @@
     <div class="form-row" id="calcRowSimple">
 
       <div class="form-group col-md-6">
-        <label for="gearButtonSimple">장비 강화 (설정하려면 클릭):</label>
+        <label for="gearButtonSimple">장비 장착/강화 (설정하려면 클릭):</label>
         <button id="gearButtonSimple" type="button" data-toggle="modal" data-target="#gearDialog" class="btn btn-outline-dark btn-block">은(0), 금(0), 보라(0), 장착 &#10003;, 강화 &#10003;</button>
       </div>
 
@@ -115,7 +115,7 @@
     <div class="form-row" id="calcRowAdvanced" hidden>
 
       <div class="form-group col-md-6">
-        <label for="gearButtonAdvanced">장비 강화 (설정하려면 클릭):</label>
+        <label for="gearButtonAdvanced">장비 장착/강화 (설정하려면 클릭):</label>
         <button id="gearButtonAdvanced" type="button" data-toggle="modal" data-target="#gearDialog" class="btn btn-outline-dark btn-block">은(0), 금(0), 보라(0), 장착 &#10003;, 강화 &#10003;</button>
       </div>
 
@@ -123,7 +123,7 @@
         <label for="numberOfCharacters">대상 캐릭터 수:</label>
         <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1" onfocus="this.select();">
       </div>
-  
+
       <div class="form-group col-md-4">
         <label for="addExpenditureButton">목록에 추가:</label>
         <button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button>
@@ -184,7 +184,7 @@
 
   <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
 
-  <p>마나 소모량 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a>,
+  <p>마나 소비량 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a>,
     <a target="_blank" href="https://rwiki.jp/priconne_redive/%E8%A3%85%E5%82%99">클릭</a></p>
 
   <div class="modal fade" id="gearDialog" role="dialog">
@@ -235,6 +235,9 @@
                 </div>
               </div>
             </div>
+            
+            <br>
+
             <div class="form-row">
               <div class="col-4">
                 <label for="gearInputSilver">은색:</label>
