@@ -21,7 +21,7 @@
 
   <h2 align="center">마나 소비량 계산기</h2>
 
-  <p align="center" id="desc">캐릭터 하나의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.</p>
+  <p align="center" id="desc">캐릭터 하나의 스킬 레벨 상승과 장비 장착 및 강화에 필요한 마나를 계산합니다.</p>
 
   <form>
 
@@ -100,35 +100,47 @@
 
     <div class="form-row" id="calcRowSimple">
 
-      <div class="form-group col-12">
-        <button type="button" id="calculateExpenditureButton" class="btn btn-primary btn-block btn-lg">계산하기</button>
+      <div class="form-group col-md-6">
+        <label for="gearButtonSimple">장비 강화 (설정하려면 클릭):</label>
+        <button id="gearButtonSimple" type="button" data-toggle="modal" data-target="#gearDialog" class="btn btn-outline-dark btn-block">은(0), 금(0), 보라(0), 장착 &#10003;, 강화 &#10003;</button>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="calculateExpenditureButton">&nbsp;</label>
+        <button type="button" id="calculateExpenditureButton" class="btn btn-primary btn-block">계산하기</button>
       </div>
 
     </div>
 
     <div class="form-row" id="calcRowAdvanced" hidden>
 
-        <div class="form-group col-6">
-          <label for="numberOfCharacters">대상 캐릭터 수:</label>
-          <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1" onfocus="this.select();">
-        </div>
-  
-        <div class="form-group col-6">
-          <label for="addExpenditureButton">목록에 추가:</label>
-          <button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button>
-        </div>
-  
+      <div class="form-group col-md-6">
+        <label for="gearButtonAdvanced">장비 강화 (설정하려면 클릭):</label>
+        <button id="gearButtonAdvanced" type="button" data-toggle="modal" data-target="#gearDialog" class="btn btn-outline-dark btn-block">은(0), 금(0), 보라(0), 장착 &#10003;, 강화 &#10003;</button>
       </div>
+
+      <div class="form-group col-3">
+        <label for="numberOfCharacters">대상 캐릭터 수:</label>
+        <input id="numberOfCharacters" type="number" class="form-control" step="1" min="1" value="1" onfocus="this.select();">
+      </div>
+  
+      <div class="form-group col-3">
+        <label for="addExpenditureButton">목록에 추가:</label>
+        <button type="button" id="addExpenditureButton" class="btn btn-primary btn-block">추가</button>
+      </div>
+  
+    </div>
 
   </form>
 
   <div class="jumbotron">
 
-    <table id="resultTable" class="table table-sm table-bordered text-center table-responsive-md" hidden>
+    <table id="resultTable" class="table table-sm table-bordered bg-white text-center table-responsive-md" hidden>
       <thead>
         <tr>
           <th colspan="4">현재 레벨</th>
           <th colspan="4">목표 레벨</th>
+          <th colspan="5">장비</th>
           <th scope="col"></th>
           <th scope="col"></th>
         </tr>
@@ -141,8 +153,13 @@
           <th scope="col">스킬 1</th>
           <th scope="col">스킬 2</th>
           <th scope="col">스킬 EX</th>
+          <th scope="col">은</th>
+          <th scope="col">금</th>
+          <th scope="col">보라</th>
+          <th scope="col">장착</th>
+          <th scope="col">강화</th>
           <th scope="col">캐릭터</th>
-          <th scope="col">행 삭제</th>
+          <th scope="col">삭제</th>
         </tr>
       </thead>
       <tbody id='resultTableBody'>
@@ -167,7 +184,76 @@
 
   <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
 
-  <p>마나 소모 표 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a></p>
+  <p>마나 소모량 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a>,
+    <a target="_blank" href="https://rwiki.jp/priconne_redive/%E8%A3%85%E5%82%99">클릭</a></p>
+
+  <div class="modal fade" id="gearDialog" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">장비 장착 및 강화 설정</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <!--
+
+          <h4>프리셋</h4>
+          <div class="form-row">
+            <div class="col-6">
+              <label for="gearPresetLowRank">8랭크 6템 (5금 1은):</label>
+              <button type="button" id="gearPresetLowRank" class="btn btn-primary btn-block">선택</button>
+            </div>
+            <div class="col-6">
+              <label for="gearPresetHigherRank">9랭크 3템 (3금):</label>
+              <button type="button" id="gearPresetHigherRank" class="btn btn-primary btn-block">선택</button>
+            </div>
+          </div>
+
+          <br>또는<br><br>
+
+          -->
+
+          <p>
+            장착 또는 강화할 장비의 수를 입력하세요. &nbsp;
+            <button id="gearInputInitialize" type="button" class="btn btn-danger btn-sm" onclick="initializeGearInfo();">입력 초기화</button>
+          <p>
+          <div class="form-row">
+            <div class="col-12">
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" class="custom-control-input" id="gearEquipCheckbox" checked>
+                <label class="custom-control-label" for="gearEquipCheckbox">장비 장착</label>
+              </div>
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" class="custom-control-input" id="gearUpgradeCheckbox" checked>
+                <label class="custom-control-label" for="gearUpgradeCheckbox">장비 강화</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-4">
+              <label for="gearInputSilver">은색:</label>
+              <input id="gearInputSilver" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
+            </div>
+            <div class="col-4">
+              <label for="gearInputGold">금색:</label>
+              <input id="gearInputGold" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
+            </div>
+            <div class="col-4">
+              <label for="gearInputPurple">보라색:</label>
+              <input id="gearInputPurple" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

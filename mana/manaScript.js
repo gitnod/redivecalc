@@ -18,7 +18,19 @@ var lvlTargetEX = document.getElementById("lvlTargetEX");
 
 var calcRowSimple = document.getElementById("calcRowSimple");
 var calcRowAdvanced = document.getElementById("calcRowAdvanced");
+
 var calculateExpenditureButton = document.getElementById("calculateExpenditureButton");
+
+var gearButtonSimple = document.getElementById("gearButtonSimple");
+var gearButtonAdvanced = document.getElementById("gearButtonAdvanced");
+var gearEquipCheckbox = document.getElementById("gearEquipCheckbox");
+var gearUpgradeCheckbox = document.getElementById("gearUpgradeCheckbox");
+// var gearPresetLowRank = document.getElementById("gearPresetLowRank");
+// var gearPresetHigherRank = document.getElementById("gearPresetHigherRank");
+var gearInputSilver = document.getElementById("gearInputSilver");
+var gearInputGold = document.getElementById("gearInputGold");
+var gearInputPurple = document.getElementById("gearInputPurple");
+
 var numberOfCharacters = document.getElementById("numberOfCharacters");
 var addExpenditureButton = document.getElementById("addExpenditureButton");
 
@@ -29,22 +41,92 @@ var backButton = document.getElementById("backButton");
 
 var manaSkillTable;
 
+// text string format: 은(d), 금(d), 보라(d)
+var gearRegExp = /은\((\d)\),\s금\((\d)\),\s보라\((\d)\)/;
+var gearInputsId = {은:"gearInputSilver", 금:"gearInputGold", 보라:"gearInputPurple"};
+var gearEquipManaExpenditureArray = {은:10000, 금:25000, 보라:40000}; // https://www.youtube.com/watch?v=USfhgSKtSWA 06:30
+var gearUpgradeManaExpenditureArray = {은:24000, 금:240000, 보라:360000};
+// var gearPresetLowRankArray = {은:1, 금:5, 보라:0};
+// var gearPresetHigherRankArray = {은:0, 금:3, 보라:0};
+
 var resultTableLength = 0;
 var resultTableRows = new Object;
 var manaExpenditures = new Object;
 
+// initialize gear equip and upgrade dialog and display
+function initializeGearInfo() {
+
+    for(var key in gearInputsId) {
+        $('#' + gearInputsId[key]).val(0);
+    }
+    gearEquipCheckbox.checked = true;
+    gearUpgradeCheckbox.checked = true;
+    updateGearDisplay();
+}
+
+// create gear input dictionary from the text
+function parseGearInfo() {
+
+    var dictionary = new Object;
+    for(var key in gearInputsId) {
+        dictionary[key] = $('#' + gearInputsId[key]).val();
+    }
+    return dictionary;
+}
+
+// update gear upgrade display
+function updateGearDisplay() {
+
+    var gearText = [];
+    for(var key in gearInputsId) {
+        gearText.push(key + '(' + $('#' + gearInputsId[key]).val() + ')');
+    }
+    if(gearEquipCheckbox.checked == true) {
+        gearText.push("장착 &#10003;");
+    } else {
+        gearText.push("장착 &#10007;");
+    }
+    if(gearUpgradeCheckbox.checked == true) {
+        gearText.push("강화 &#10003;");
+    } else {
+        gearText.push("강화 &#10007;");
+    }
+    gearButtonSimple.innerHTML = gearText.join(', ');
+    gearButtonAdvanced.innerHTML = gearText.join(', ');
+}
+
+// parse gear upgrade information from the text
+function computeManaExpenditureForGears(gearDictionary) {
+
+    var manaExpenditure = 0;
+    var spendManaOnEquip = 0;
+    var spendManaOnUpgrade = 0;
+
+    if(gearEquipCheckbox.checked == true)   { spendManaOnEquip = 1; }
+    if(gearUpgradeCheckbox.checked == true) { spendManaOnUpgrade = 1; }
+
+    for(var key in gearDictionary) {
+        manaExpenditure += gearDictionary[key] * (spendManaOnEquip * gearEquipManaExpenditureArray[key] + spendManaOnUpgrade * gearUpgradeManaExpenditureArray[key]);
+    }
+
+    return manaExpenditure;
+}
+
 // compute mana expenditure given current and target skill levels
-function computeManaExpenditure(currentLvl, targetLvl, characters) {
+function computeManaExpenditure(currentLvl, targetLvl, gearDictionary, characters) {
 
     // initialize mana expenditure
     var manaExpenditure = 0;
 
-    // compute mana expenditure
+    // compute mana expenditure for skill level up
     for(var k=0; k<4; k++) {
         if(targetLvl[k] >= currentLvl[k]) {
             manaExpenditure += manaSkillTable[targetLvl[k]-1]["Cumul"] - manaSkillTable[currentLvl[k]-1]["Cumul"];
         }
     }
+
+    // compute mana expenditure for gear upgrade
+    manaExpenditure += computeManaExpenditureForGears(gearDictionary);
 
     // multiply by number of characters
     manaExpenditure = manaExpenditure * characters;
@@ -99,7 +181,7 @@ function checkSanityOfLevels(currentLvl, targetLvl) {
 }
 
 // add expenditure to the table and the total expenditure variable
-function addExpenditure(currentLvl, targetLvl, characters) {
+function addExpenditure(currentLvl, targetLvl, gearDictionary, characters) {
 
     // initialize iterator
     var j=0;
@@ -116,23 +198,68 @@ function addExpenditure(currentLvl, targetLvl, characters) {
         // initialize html info
         var resultTableRowHtml = '';
 
+        // make deep copies of inputs
+        var stringCurrentLvl = currentLvl.slice();
+        var stringTargetLvl = targetLvl.slice();
+        var stringGearDictionary = jQuery.extend(true, {}, gearDictionary);
+        var stringGearChecked = new Object;
+
+        // replace 0 with blank if current and target skill level match
+        for(j=0; j<4; j++) {
+            if(targetLvl[j] == currentLvl[j]) {
+                stringCurrentLvl[j] = '';
+                stringTargetLvl[j] = '';
+            }
+        }
+
+        // replace 0 with blank in number of gears considered
+        var countGears = 0;
+        for(var key in gearDictionary) {
+            countGears += gearDictionary[key];
+            if(gearDictionary[key] == 0) {
+                stringGearDictionary[key] = '';
+            }
+        }
+
+        // replace check and cross marks with blank if no gear considered
+        if(countGears == 0) {
+            stringGearChecked["equip"] = '<td></td>';
+            stringGearChecked["upgrade"] = '<td></td>';
+        } else {
+            if(gearEquipCheckbox.checked == true) {
+                stringGearChecked["equip"] = '<td> &#10003; </td>';
+            } else {
+                stringGearChecked["equip"] = '<td> &#10007; </td>';
+            }
+            if(gearUpgradeCheckbox.checked == true) {
+                stringGearChecked["upgrade"] = '<td> &#10003; </td>';
+            } else {
+                stringGearChecked["upgrade"] = '<td> &#10007; </td>';
+            }
+        }
+
         // fill in the table rows
         resultTableRowHtml += '<tr>';
         for(j=0; j<4; j++) {
-            resultTableRowHtml += '<td>' + currentLvl[j] + '</td>';
+            resultTableRowHtml += '<td>' + stringCurrentLvl[j] + '</td>';
         }
         for(j=0; j<4; j++) {
-            resultTableRowHtml += '<td>' + targetLvl[j] + '</td>';
+            resultTableRowHtml += '<td>' + stringTargetLvl[j] + '</td>';
         }
+        for(var key in gearDictionary) {
+            resultTableRowHtml += '<td>' + stringGearDictionary[key] + '</td>';
+        }
+        resultTableRowHtml += stringGearChecked["equip"];
+        resultTableRowHtml += stringGearChecked["upgrade"];
         resultTableRowHtml += '<td>' + characters + '</td>';
-        resultTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger">삭제</button></td>';
+        resultTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteExpenditure(' + rowNumber + ')" class="btn btn-danger btn-sm">삭제</button></td>';
         resultTableRowHtml += '</tr>';
 
         // add table row to the table rows list
         resultTableRows[rowNumber] = resultTableRowHtml;
 
         // add mana expenditure
-        manaExpenditures[rowNumber] = computeManaExpenditure(currentLvl, targetLvl, characters);
+        manaExpenditures[rowNumber] = computeManaExpenditure(currentLvl, targetLvl, gearDictionary, characters);
 
         // update display
         updateExpenditure();
@@ -214,7 +341,7 @@ calcTypeSimple.addEventListener("click", function() {
     resultTable.hidden = true;
 
     // update description
-    desc.innerHTML = '캐릭터 하나의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.';
+    desc.innerHTML = '캐릭터 하나의 스킬 레벨 상승과 장비 장착 및 강화에 필요한 마나를 계산합니다.';
 
     // trigger calc button click
     $('#calculateExpenditureButton').trigger("click");
@@ -235,13 +362,11 @@ calcTypeAdvanced.addEventListener("click", function() {
     resultTable.hidden = false;
 
     // update description
-    desc.innerHTML = '여러 캐릭터들의 스킬 레벨을 목표치까지 상승시키는데 필요한 마나를 계산합니다.';
+    desc.innerHTML = '여러 캐릭터들의 스킬 레벨 상승과 장비 장착 및 강화에 필요한 마나를 계산합니다.';
 
     // update table
     updateExpenditure();
 })
-
-
 
 // toggle restricted input status
 lvlCurrentRestrict.addEventListener("change", function() {
@@ -324,9 +449,35 @@ calculateExpenditureButton.addEventListener("click", function() {
 
     // display result
     if(isAdmissible == true) {
-        resultText.innerHTML = '소비 마나: ' + computeManaExpenditure(currentLvlArray, targetLvlArray, 1);
+        resultText.innerHTML = '소비 마나: ' + computeManaExpenditure(currentLvlArray, targetLvlArray, parseGearInfo(), 1);
     }
-    
+
+})
+
+/*
+
+gearPresetLowRank.addEventListener("click", function() {
+
+    for(var key in gearInputsId) {
+        $('#' + gearInputsId[key]).val(gearPresetLowRankArray[key]);
+    }
+    $('#gearUpgradeDialog').modal('hide');
+})
+
+gearPresetHigherRank.addEventListener("click", function() {
+
+    for(var key in gearInputsId) {
+        $('#' + gearInputsId[key]).val(gearPresetHigherRankArray[key]);
+    }
+    $('#gearUpgradeDialog').modal('hide');
+})
+
+*/
+
+$("#gearDialog").on("hidden.bs.modal", function(e) {
+
+    updateGearDisplay();
+
 })
 
 addExpenditureButton.addEventListener("click", function() {
@@ -346,7 +497,7 @@ addExpenditureButton.addEventListener("click", function() {
     targetLvlArray.push(Number(lvlTargetEX.value));
 
     // add expenditure info
-    addExpenditure(currentLvlArray, targetLvlArray, Number(numberOfCharacters.value));
+    addExpenditure(currentLvlArray, targetLvlArray, parseGearInfo(), Number(numberOfCharacters.value));
 
 })
 
