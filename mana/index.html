@@ -220,32 +220,37 @@
             장착 또는 강화할 장비의 수를 입력하세요. &nbsp;
             <button id="gearInputInitialize" type="button" class="btn btn-danger btn-sm" onclick="initializeGearInfo();">입력 초기화</button>
           <p>
-          <div class="form-row">
-            <div class="col-12">
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="gearEquipCheckbox" checked>
-                <label class="custom-control-label" for="gearEquipCheckbox">장비 장착</label>
+
+          <form>
+
+            <div class="form-row">
+              <div class="col-12">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="gearEquipCheckbox" checked>
+                  <label class="custom-control-label" for="gearEquipCheckbox">장비 장착</label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="checkbox" class="custom-control-input" id="gearUpgradeCheckbox" checked>
+                  <label class="custom-control-label" for="gearUpgradeCheckbox">장비 강화</label>
+                </div>
               </div>
-              <div class="custom-control custom-checkbox custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="gearUpgradeCheckbox" checked>
-                <label class="custom-control-label" for="gearUpgradeCheckbox">장비 강화</label>
+            </div>
+            <div class="form-row">
+              <div class="col-4">
+                <label for="gearInputSilver">은색:</label>
+                <input id="gearInputSilver" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
+              </div>
+              <div class="col-4">
+                <label for="gearInputGold">금색:</label>
+                <input id="gearInputGold" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
+              </div>
+              <div class="col-4">
+                <label for="gearInputPurple">보라색:</label>
+                <input id="gearInputPurple" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
               </div>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="col-4">
-              <label for="gearInputSilver">은색:</label>
-              <input id="gearInputSilver" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
-            </div>
-            <div class="col-4">
-              <label for="gearInputGold">금색:</label>
-              <input id="gearInputGold" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
-            </div>
-            <div class="col-4">
-              <label for="gearInputPurple">보라색:</label>
-              <input id="gearInputPurple" type="number" class="form-control" step="1" min="0" max="6" value="0" onfocus="this.select();">
-            </div>
-          </div>
+
+          </form>
 
         </div>
         <div class="modal-footer">
