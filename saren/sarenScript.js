@@ -3,6 +3,7 @@
 var inputByText = document.getElementById("inputByText");
 var inputByClick = document.getElementById("inputByClick");
 var searchLimitedByBasicName = document.getElementById("searchLimitedByBasicName");
+var searchExactMatch = document.getElementById("searchExactMatch");
 var displayAll = document.getElementById("displayAll");
 var displayFront = document.getElementById("displayFront");
 var displayMiddle = document.getElementById("displayMiddle");
@@ -121,7 +122,7 @@ function searchCharactersAndUpdateList() {
     characterInput = characterInput.filter(function(value, index, arr) { return value != ""; })
 
     // search characters with the text input
-    var searchedCharacters = searchRediveCharactersByKeywords(characterInput, characterPositionsTable, characterTitlesMap, searchLimitedByBasicName.checked);
+    var searchedCharacters = searchRediveCharactersByKeywords(characterInput, characterPositionsTable, characterTitlesMap, searchLimitedByBasicName.checked, searchExactMatch.checked);
 
     // combine it with the character list from the checkboxes
     searchedCharacters = searchedCharacters.concat(searchRediveCharactersFromCheckboxes(characterTitlesArray));
@@ -170,7 +171,7 @@ window.onload = function() {
 
 }
 
-// change character list table when the text input changes
+// update character list table when the text input option changes
 inputByText.addEventListener("keydown", function() {
 
     // suppress enter key from submitting the form
@@ -182,14 +183,21 @@ inputByText.addEventListener("keydown", function() {
 
 })
 
-// change character list table when the text input option changes
+// update character list table when the text input option changes
 searchLimitedByBasicName.addEventListener("click", function() {
 
     searchCharactersAndUpdateList();
 
 })
 
-// change character list table when the character click dialog is dismissed
+// update character list table when the text input option changes
+searchExactMatch.addEventListener("click", function() {
+
+    searchCharactersAndUpdateList();
+
+})
+
+// update character list table when the character click dialog is dismissed
 $("#clickCharacters").on("hidden.bs.modal", function(e) {
 
     searchCharactersAndUpdateList();
