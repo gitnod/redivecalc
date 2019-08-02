@@ -40,19 +40,20 @@ function searchCharactersAndUpdateResults() {
     }
 
     // initialize character position dictionary
-    var searchedCharactersDictionary = new Object;
+    var searchedCharactersDictionary = [];
 
     // add all searched characters to the dictionary
     for(var j=0; j < searchedCharacters.length; j++) {
-        searchedCharactersDictionary[characterPositionsMap.get(searchedCharacters[j])] = searchedCharacters[j];
+        searchedCharactersDictionary.push([characterPositionsMap.get(searchedCharacters[j]), searchedCharacters[j]]);
     }
+    searchedCharactersDictionary.sort();
 
     // create character lists and positions list with the dictionary
     var searchedCharactersArray = [];
     var searchedPositions = [];
-    for(var key in searchedCharactersDictionary) {
-        searchedCharactersArray.push(searchedCharactersDictionary[key]);
-        searchedPositions.push(key);
+    for(var j=0; j < searchedCharactersDictionary.length; j++) {
+        searchedCharactersArray.push(searchedCharactersDictionary[j][1]);
+        searchedPositions.push(searchedCharactersDictionary[j][0]);
     }
 
     // update the party display
