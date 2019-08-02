@@ -304,13 +304,13 @@ function updateExpenditure() {
     }
 }
 
-// load character position map after page load
+// load mana expenditure table after page load
 window.onload = function() {
 
-    // locate character position table file
+    // locate mana expenditure table file
     fileURLString = "https://raw.githubusercontent.com/gitnod/redivecalc/gh-pages/data/manaSkillTable.csv";
 
-    // read character position table
+    // read mana expenditure table
     Papa.parse(fileURLString, {
         download: true,
         header: true,
@@ -318,7 +318,7 @@ window.onload = function() {
         skipEmptyLines: true,
         complete: function(results) {
 
-            // save character position table
+            // save mana expenditure table
             manaSkillTable = results.data;
 
         }
@@ -326,7 +326,7 @@ window.onload = function() {
 
 }
 
-// activate simple calcucation mode
+// activate simple calculation mode
 calcTypeSimple.addEventListener("click", function() {
 
     // update calcType button aesthetics
@@ -347,7 +347,7 @@ calcTypeSimple.addEventListener("click", function() {
     $('#calculateExpenditureButton').trigger("click");
 })
 
-// activate simple calcucation mode
+// activate advanced calculation mode
 calcTypeAdvanced.addEventListener("click", function() {
 
     // update calcType button aesthetics

@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+
+<!-- based on Bootstrap theme. -->
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>경험치 물약 소비량 계산기</title>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2 align="center">경험치 물약 소비량 계산기</h2>
+
+  <p align="center" id="desc">보유중인 경험치 물약의 양과 캐릭터의 레벨 상승에 필요한 경험치 양을 비교합니다.</p>
+
+  <form>
+
+    <div class="form-row">
+      <div class="form-group col-6">
+        <button type="button" id="calcTypeSimple" class="btn btn-success btn-block">단순 계산</button>
+      </div>
+      <div class="form-group col-6">
+        <button type="button" id="calcTypeAdvanced" class="btn btn-outline-success btn-block">고급 계산</button>
+      </div>
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group col-md-6">
+        <table class="table table-sm text-center">
+          <thead>
+            <tr>
+              <th colspan="4">
+                경험치 물약 보유량 (설정하려면 클릭)
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">미니</th>
+              <th scope="col">일반</th>
+              <th scope="col">하이</th>
+              <th scope="col">메가</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button id="expPotionButtonTier1" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
+              <td><button id="expPotionButtonTier2" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
+              <td><button id="expPotionButtonTier3" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
+              <td><button id="expPotionButtonTier4" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="form-group col-md-6">
+        <table class="table table-sm text-center">
+          <thead>
+            <tr>
+              <th colspan="3">
+                  캐릭터 레벨업 정보
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">현재 레벨</th>
+              <th scope="col">목표 레벨</th>
+              <th scope="col">캐릭터 수</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input id="lvlCurrent" type="number" class="form-control" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+              <td><input id="lvlTarget" type="number" class="form-control" step="1" min="1" max="130" value="130" onfocus="this.select();"></td>
+              <td><input id="lvlCharacters" type="number" class="form-control" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="form-row" id="calcRowSimple">
+
+      <div class="form-group col">
+        <button type="button" id="calculateExpButton" class="btn btn-lg btn-primary btn-block">계산하기</button>
+      </div>
+
+    </div>
+
+    <div class="form-row" id="calcRowAdvanced" hidden>
+
+      <div class="form-group col">
+        <button type="button" id="addExpButton" class="btn btn-lg btn-primary btn-block">목록에 추가</button>
+      </div>
+  
+    </div>
+
+  </form>
+
+  <div class="jumbotron">
+
+    <table id="resultTable" class="table table-sm table-bordered bg-white text-center table-responsive-md" hidden>
+      <thead>
+        <tr>
+          <th scope="col">현재 레벨</th>
+          <th scope="col">목표 레벨</th>
+          <th scope="col">캐릭터 수</th>
+          <th scope="col">삭제</th>
+        </tr>
+      </thead>
+      <tbody id='resultTableBody'>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><!-- <button type="button" id="deleteLvlInfo1" class="btn btn-danger">삭제</button> --></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="resultText">필요 경험치: 0</h3>
+
+  </div>
+
+  <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
+
+  <p>경험치 필요량 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a></p>
+
+  <div class="modal fade" id="potionDialog" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">포션 보유량 설정</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <!--
+
+          <p>
+            경험치 포션 보유량을 입력하세요.
+          <p>
+
+          -->
+
+          <form>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <table class="table table-sm text-center">
+                  <thead>
+                    <tr>
+                      <th colspan="4">
+                        경험치 물약 보유량을 입력하세요.
+                      </th>
+                    </tr>
+                    <tr>
+                      <th scope="col">미니</th>
+                      <th scope="col">일반</th>
+                      <th scope="col">하이</th>
+                      <th scope="col">메가</th>
+                    </tr>
+                    <tr>
+                      <th scope="col"><img src="../data/expPotionTier1.png" style="max-width:100%;"></th>
+                      <th scope="col"><img src="../data/expPotionTier2.png" style="max-width:100%;"></th>
+                      <th scope="col"><img src="../data/expPotionTier3.png" style="max-width:100%;"></th>
+                      <th scope="col"><img src="../data/expPotionTier4.jpg" style="max-width:100%;"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input id="expPotionInputTier1" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
+                      <td><input id="expPotionInputTier2" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
+                      <td><input id="expPotionInputTier3" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
+                      <td><input id="expPotionInputTier4" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  <!-- library for loading CSV files -->
+  <script src="../lib/PapaParse/papaparse.min.js"></script>
+
+  <!-- saren calculator script -->
+  <script src="expScript.js"></script>
+
+</div>
+
+</body>
+
+</html>
