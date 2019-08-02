@@ -68,19 +68,20 @@ function updateList(searchedCharacters) {
     }
 
     // initialize character position dictionary
-    var searchedCharactersDictionary = new Object;
+    var searchedCharactersDictionary = [];
 
     // add all searched characters to the dictionary
     for(var j=0; j < searchedCharacters.length; j++) {
-        searchedCharactersDictionary[characterPositionsMap.get(searchedCharacters[j])] = searchedCharacters[j];
+        searchedCharactersDictionary.push([characterPositionsMap.get(searchedCharacters[j]), searchedCharacters[j]]);
     }
+    searchedCharactersDictionary.sort();
 
     // clear character positions list
     clearList();
 
     // create the character positions list from the dictionary
-    for(var key in searchedCharactersDictionary) {
-        addCharacterToList(searchedCharactersDictionary[key]);
+    for(var j=0; j < searchedCharactersDictionary.length; j++) {
+        addCharacterToList(searchedCharactersDictionary[j][1]);
     }
 
     // highlight character positions list
@@ -95,12 +96,12 @@ function highlightList() {
     // initialize character positions array
     var displayedCharactersTitlesArray = [];
     var displayedCharactersRelativePositionsArray = [];
-    // read character positions
-    for(var j=0; j < displayedCharactersExceptSaren.length; j++) {
+    // read character positions. Read from the largest to the smallest position
+    for(var j=displayedCharactersExceptSaren.length-1; j >= 0; j--) {
         displayedCharactersTitlesArray.push(displayedCharactersExceptSaren[j]);
         displayedCharactersRelativePositionsArray.push(characterRelativePositionsMap.get(displayedCharactersExceptSaren[j]));
     }
-    // compute index of minimum entry
+    // compute index of minimum entry. If multiple minima, character with largest position is chosen
     var minIndex = displayedCharactersRelativePositionsArray.indexOf(Math.min(...displayedCharactersRelativePositionsArray));
     // read objects representing saren and closest character
     var liSaren = document.getElementById("사렌");
