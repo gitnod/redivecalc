@@ -41,28 +41,28 @@
           <thead>
             <tr>
               <th colspan="4">
-                경험치 물약 보유량 (설정하려면 클릭)
+                경험치 물약 보유량
               </th>
             </tr>
             <tr>
-              <th scope="col">미니</th>
-              <th scope="col">일반</th>
-              <th scope="col">하이</th>
-              <th scope="col">메가</th>
+              <th scope="col"><img src="../data/expPotionTier1.png" style="max-width:100%;"></th>
+              <th scope="col"><img src="../data/expPotionTier2.png" style="max-width:100%;"></th>
+              <th scope="col"><img src="../data/expPotionTier3.png" style="max-width:100%;"></th>
+              <th scope="col"><img src="../data/expPotionTier4.jpg" style="max-width:100%;"></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><button id="expPotionButtonTier1" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
-              <td><button id="expPotionButtonTier2" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
-              <td><button id="expPotionButtonTier3" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
-              <td><button id="expPotionButtonTier4" type="button" data-toggle="modal" data-target="#potionDialog" class="btn btn-outline-dark btn-block">0</button></td>
+              <td><input id="expPotionInputTier1" type="number" class="form-control text-center" step="1" min="0" value="0" onfocus="this.select();"></td>
+              <td><input id="expPotionInputTier2" type="number" class="form-control text-center" step="1" min="0" value="0" onfocus="this.select();"></td>
+              <td><input id="expPotionInputTier3" type="number" class="form-control text-center" step="1" min="0" value="0" onfocus="this.select();"></td>
+              <td><input id="expPotionInputTier4" type="number" class="form-control text-center" step="1" min="0" value="0" onfocus="this.select();"></td>
             </tr>
           </tbody>
         </table>
       </div>
       
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-6 align-self-end">
         <table class="table table-sm text-center">
           <thead>
             <tr>
@@ -73,14 +73,14 @@
             <tr>
               <th scope="col">현재 레벨</th>
               <th scope="col">목표 레벨</th>
-              <th scope="col">캐릭터 수</th>
+              <th scope="col">대상 캐릭터 수</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><input id="lvlCurrent" type="number" class="form-control" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
-              <td><input id="lvlTarget" type="number" class="form-control" step="1" min="1" max="130" value="130" onfocus="this.select();"></td>
-              <td><input id="lvlCharacters" type="number" class="form-control" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+              <td><input id="lvlCurrent" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+              <td><input id="lvlTarget" type="number" class="form-control text-center" step="1" min="1" max="130" value="130" onfocus="this.select();"></td>
+              <td><input id="lvlCharacters" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
             </tr>
           </tbody>
         </table>
@@ -108,26 +108,68 @@
 
   <div class="jumbotron">
 
-    <table id="resultTable" class="table table-sm table-bordered bg-white text-center table-responsive-md" hidden>
-      <thead>
-        <tr>
-          <th scope="col">현재 레벨</th>
-          <th scope="col">목표 레벨</th>
-          <th scope="col">캐릭터 수</th>
-          <th scope="col">삭제</th>
-        </tr>
-      </thead>
-      <tbody id='resultTableBody'>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><!-- <button type="button" id="deleteLvlInfo1" class="btn btn-danger">삭제</button> --></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row justify-content-center">
 
-    <h3 id="resultText">필요 경험치: 0</h3>
+      <div class="col-md-6">
+
+        <table id="resultTable" class="table table-sm table-bordered bg-white text-center table-responsive-md" hidden>
+          <thead>
+            <tr>
+              <th scope="col">현재 레벨</th>
+              <th scope="col">목표 레벨</th>
+              <th scope="col">캐릭터 수</th>
+              <th scope="col">삭제</th>
+            </tr>
+          </thead>
+          <tbody id='resultTableBody'>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><!-- <button type="button" id="deleteLvlInfo1" class="btn btn-danger">삭제</button> --></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+    <h3 align="center" id="resultText">계산결과: 경험치 포션 부족</h3>
+
+    <div class="row justify-content-center">
+
+      <div class="col-md-6">
+
+        <table class="table table-sm table-bordered bg-white text-center table-responsive-md">
+          <thead>
+            <tr>
+              <th colspan="4" id="expPotionResultHeader">
+                추가구매 필요량 (단위를 바꾸려면 이미지 클릭):
+              </th>
+            </tr>
+            <tr>
+              <th scope="col"><img src="../data/expPotionTier1.png" style="max-width:100%;" onclick='updatePotionResultUnit("미니")'></th>
+              <th scope="col"><img src="../data/expPotionTier2.png" style="max-width:100%;" onclick='updatePotionResultUnit("일반")'></th>
+              <th scope="col"><img src="../data/expPotionTier3.png" style="max-width:100%;" onclick='updatePotionResultUnit("하이")'></th>
+              <th scope="col"><img src="../data/expPotionTier4.jpg" style="max-width:100%;" onclick='updatePotionResultUnit("메가")'></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="expPotionResultTier1">0</td>
+              <td id="expPotionResultTier2">0</td>
+              <td id="expPotionResultTier3">0</td>
+              <td id="expPotionResultTier4">0</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+
 
   </div>
 
