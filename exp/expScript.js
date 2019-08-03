@@ -230,21 +230,28 @@ calcTypeAdvanced.addEventListener("click", function() {
 
 calculateExpButton.addEventListener("click", function() {
 
+    // read potion inventory and required levelups
     updateExpPotionInventoryFromInput();
     updateExpConsumptionArraySimple();
 
-    var requiredExp = requiredExpArray.reduce((a,b) => a + b, 0);
-    var availableExp = computeExpAmount(expPotionValuesArray, expPotionInventoryArray);
-    var remainingInventory = {};
+    // consume inventory for levelup
+    var remainingInventory = expPotionInventoryArray;
+    for(var j=0; j<requiredExpArray.length; j++) {
+        remainingInventory = consumeExpPotions(requiredExpArray[j], expPotionValuesArray, remainingInventory);
+    }
 
-    if(requiredExp > availableExp) {
-        resultText.innerHTML = "계산결과: 경험치 포션 부족";
-        expPotionResultHeader.innerHTML = "추가구매 필요량 (단위를 바꾸려면 이미지 클릭):";
+    // compute net inventory
+    var netExp = computeExpAmount(expPotionValuesArray, remainingInventory);
+
+    // display result
+    if(netExp < 0) {
+        resultText.innerHTML = "결과: 경험치 포션 부족";
+        expPotionResultHeader.innerHTML = "추가구매 필요량:";
         initializeResultsDisplay();
-        $('#' + expPotionResultsArray[expPotionResultUnit]).html(Math.ceil((requiredExp - availableExp) / expPotionValuesArray[expPotionResultUnit]));
+        $('#' + expPotionResultsArray[expPotionResultUnit]).html(Math.ceil((-1) * netExp / expPotionValuesArray[expPotionResultUnit]));
     } else {
-        resultText.innerHTML = "계산결과: 경험치 포션 충분";
-        expPotionResultHeader.innerHTML = "레벨업 후 남은 경험치 포션:";
+        resultText.innerHTML = "결과: 경험치 포션 충분";
+        expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
         remainingInventory = expPotionInventoryArray;
         for(var j=0; j<requiredExpArray.length; j++) {
             remainingInventory = consumeExpPotions(requiredExpArray[j], expPotionValuesArray, remainingInventory);
