@@ -174,7 +174,7 @@ function updateRequiredExp() {
     // update result
     var requiredExpArray = Object.values(requiredExpList).reduce((acc, val) => acc.concat(val), []);
     if(requiredExpArray.length == 0) {
-        resultText.innerHTML = "결과: 경험치 포션 충분";
+        resultText.innerHTML = "결과: 포션 충분";
         expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
         initializeResultsDisplay();
     } else {
