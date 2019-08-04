@@ -19,9 +19,11 @@
 
 <div class="container">
 
-  <h2 align="center">경험치 포션 소비량 계산기</h2>
+  <h2 align="center"><span>경험치 포션</span> <span>소비량</span> <span>계산기</span></h2>
 
-  <p align="center" id="desc">보유중인 경험치 포션으로 캐릭터들의 레벨 상승이 가능한지 계산합니다.</p>
+  <style>h2 span{display: inline-block}</style>
+
+  <p align="center" id="desc">보유중인 경험치 포션으로 캐릭터들의 레벨업이 가능한지 계산합니다.</p>
 
   <form>
 
@@ -88,7 +90,7 @@
           </table>
         </div>
 
-        <div class="d-md"><br></div>
+        <div class="d-none d-md-block"><br></div>
 
         <div class="form-group form-row" id="calcRowSimple">
           <div class="form-group col">
@@ -142,7 +144,7 @@
 
     </div>
 
-    <h3 align="center" id="resultText">결과: 경험치 포션 부족</h3>
+    <h3 align="center" id="resultText">결과: 포션 부족</h3>
 
     <div class="row justify-content-center">
 
@@ -175,8 +177,6 @@
       </div>
 
     </div>
-
-
 
   </div>
 

@@ -262,12 +262,12 @@ function compareInventoryAndUpdate(requiredExpArray) {
 
     // display result
     if(netExp < 0) {
-        resultText.innerHTML = "결과: 경험치 포션 부족";
+        resultText.innerHTML = "결과: 포션 부족";
         expPotionResultHeader.innerHTML = "추가구매 필요량:";
         initializeResultsDisplay();
         $('#' + expPotionResultsArray[expPotionResultUnit]).html(Math.ceil((-1) * netExp / expPotionValuesArray[expPotionResultUnit]));
     } else {
-        resultText.innerHTML = "결과: 경험치 포션 충분";
+        resultText.innerHTML = "결과: 포션 충분";
         expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
         initializeResultsDisplay();
         for(var key in remainingInventory) {
@@ -313,6 +313,9 @@ calcTypeSimple.addEventListener("click", function() {
     // hide result table
     resultTable.hidden = true;
 
+    // update description
+    desc.innerHTML = "보유중인 경험치 포션으로 캐릭터들의 레벨업이 가능한지 계산합니다.";
+
     // trigger calc button click
     $('#calculateExpButton').trigger("click");
 })
@@ -330,6 +333,9 @@ calcTypeAdvanced.addEventListener("click", function() {
 
     // unhide result table
     resultTable.hidden = false;
+
+    // update description
+    desc.innerHTML = "보유중인 경험치 포션으로 캐릭터들의 레벨업이 가능한지 계산합니다. 레벨업 정보를 여러개 작성할 수 있습니다.";
 
     // update table
     updateRequiredExp();
