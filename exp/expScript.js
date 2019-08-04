@@ -38,7 +38,11 @@ function updateExpPotionInventoryFromInput() {
 function updatePotionResultUnit(unit) {
     
     expPotionResultUnit = unit;
-    $("#calculateExpButton").trigger("click");
+    if(calcRowSimple.hidden == false) {
+        $("#calculateExpButton").trigger("click");
+    } else {
+        updateRequiredExp();
+    }
 
 }
 
