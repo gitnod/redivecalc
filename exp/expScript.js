@@ -13,6 +13,7 @@ var resultText = document.getElementById("resultText");
 var expPotionResultHeader = document.getElementById("expPotionResultHeader");
 
 var calculateExpButton = document.getElementById("calculateExpButton");
+var addExpButton = document.getElementById("addExpButton");
 
 var backButton = document.getElementById("backButton");
 
@@ -24,29 +25,14 @@ var expPotionInputsArray = {미니:"expPotionInputTier1", 일반:"expPotionInput
 var expPotionResultsArray = {미니:"expPotionResultTier1", 일반:"expPotionResultTier2", 하이:"expPotionResultTier3", 메가:"expPotionResultTier4"};
 var expPotionResultUnit = "메가";
 
-var requiredExpArray = [];
-
 var resultTableLength = 0;
 var resultTableRows = new Object;
+var requiredExpList = new Object;
 
 function updateExpPotionInventoryFromInput() {
     for(key in expPotionInventoryArray) {
         expPotionInventoryArray[key] = Number($('#' + expPotionInputsArray[key]).val());
     }
-}
-
-function updateExpConsumptionArraySimple() {
-
-    var isAdmissible = checkSanityOfLevels(lvlCurrent, lvlTarget);
-
-    requiredExpArray = [];
-
-    if(isAdmissible == true) {
-        for(var j=0; j<lvlCharacters.value; j++) {
-            requiredExpArray.push(expCharacterTable[lvlTarget.value-1]["Cumul"] - expCharacterTable[lvlCurrent.value-1]["Cumul"]);
-        }
-    }
-
 }
 
 function updatePotionResultUnit(unit) {
@@ -98,6 +84,102 @@ function checkSanityOfLevels(currentLvl, targetLvl) {
 
     }
 
+}
+
+function createRequiredExpArray(currentLvl, targetLvl, characters) {
+
+    var isAdmissible = checkSanityOfLevels(currentLvl, targetLvl);
+
+    var requiredExpArray = [];
+
+    if(isAdmissible == true) {
+        for(var j=0; j<characters; j++) {
+            requiredExpArray.push(expCharacterTable[lvlTarget.value-1]["Cumul"] - expCharacterTable[lvlCurrent.value-1]["Cumul"]);
+        }
+    }
+
+    return requiredExpArray;
+
+}
+
+// add required exp info to the table and the required exp variable
+function addRequiredExp(currentLvl, targetLvl, characters) {
+
+    // initialize iterator
+    var j=0;
+
+    // check sanity of inputs
+    isAdmissible = checkSanityOfLevels(currentLvl, targetLvl);
+
+    if(isAdmissible == true) {
+
+        // increase number of rows by 1
+        resultTableLength += 1;
+        rowNumber = resultTableLength;
+
+        // initialize html info
+        var resultTableRowHtml = '';
+
+        // fill in the table rows
+        resultTableRowHtml += '<tr>';
+        resultTableRowHtml += '<td>' + currentLvl + '</td>';
+        resultTableRowHtml += '<td>' + targetLvl + '</td>';
+        resultTableRowHtml += '<td>' + characters + '</td>';
+        resultTableRowHtml += '<td><button type="button" id="deleteTableRow' + rowNumber + '" onclick="deleteRequiredExp(' + rowNumber + ')" class="btn btn-danger btn-sm">삭제</button></td>';
+        resultTableRowHtml += '</tr>';
+
+        // add table row to the table rows list
+        resultTableRows[rowNumber] = resultTableRowHtml;
+
+        // add required exp
+        requiredExpList[rowNumber] = createRequiredExpArray(currentLvl, targetLvl, characters);
+
+        // update display
+        updateRequiredExp();
+
+    }
+
+}
+
+// delete required exp info to the table and the required exp variable
+function deleteRequiredExp(rowNumber) {
+
+    // delete table row
+    delete resultTableRows[rowNumber];
+    delete requiredExpList[rowNumber];
+
+    // update display
+    updateRequiredExp();
+
+}
+
+function initializeResultsDisplay() {
+    for(var key in expPotionResultsArray) {
+        $('#' + expPotionResultsArray[key]).html(0);
+    }
+}
+
+// update display
+function updateRequiredExp() {
+    
+    // initialize table html
+    var resultTableHtml = "";
+
+    // update table
+    for(var key in resultTableRows) {
+        resultTableHtml += resultTableRows[key];
+    }
+    $("#resultTableBody").html(resultTableHtml);
+
+    // update result
+    var requiredExpArray = Object.values(requiredExpList).reduce((acc, val) => acc.concat(val), []);
+    if(requiredExpArray.length == 0) {
+        resultText.innerHTML = "결과: 경험치 포션 충분";
+        expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
+        initializeResultsDisplay();
+    } else {
+        compareInventoryAndUpdate(requiredExpArray);
+    }
 }
 
 function computeExpAmount(potionValues, potionInventory) {
@@ -164,10 +246,35 @@ function consumeExpPotions(amount, potionValues, potionInventory) {
     return currentInventory;
 }
 
-function initializeResultsDisplay() {
-    for(var key in expPotionResultsArray) {
-        $('#' + expPotionResultsArray[key]).html(0);
+function compareInventoryAndUpdate(requiredExpArray) {
+
+    // update potion inventory
+    updateExpPotionInventoryFromInput();
+
+    // consume inventory for levelup
+    var remainingInventory = expPotionInventoryArray;
+    for(var j=0; j<requiredExpArray.length; j++) {
+        remainingInventory = consumeExpPotions(requiredExpArray[j], expPotionValuesArray, remainingInventory);
     }
+
+    // compute net inventory
+    var netExp = computeExpAmount(expPotionValuesArray, remainingInventory);
+
+    // display result
+    if(netExp < 0) {
+        resultText.innerHTML = "결과: 경험치 포션 부족";
+        expPotionResultHeader.innerHTML = "추가구매 필요량:";
+        initializeResultsDisplay();
+        $('#' + expPotionResultsArray[expPotionResultUnit]).html(Math.ceil((-1) * netExp / expPotionValuesArray[expPotionResultUnit]));
+    } else {
+        resultText.innerHTML = "결과: 경험치 포션 충분";
+        expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
+        initializeResultsDisplay();
+        for(var key in remainingInventory) {
+            $('#' + expPotionResultsArray[key]).html(remainingInventory[key]);
+        }
+    }
+
 }
 
 // load exp expenditure table after page load
@@ -225,42 +332,22 @@ calcTypeAdvanced.addEventListener("click", function() {
     resultTable.hidden = false;
 
     // update table
-    // updateExpenditure();
+    updateRequiredExp();
 })
 
 calculateExpButton.addEventListener("click", function() {
 
-    // read potion inventory and required levelups
-    updateExpPotionInventoryFromInput();
-    updateExpConsumptionArraySimple();
+    // read required levelups
+    var requiredExpArray = createRequiredExpArray(lvlCurrent.value, lvlTarget.value, lvlCharacters.value);
 
-    // consume inventory for levelup
-    var remainingInventory = expPotionInventoryArray;
-    for(var j=0; j<requiredExpArray.length; j++) {
-        remainingInventory = consumeExpPotions(requiredExpArray[j], expPotionValuesArray, remainingInventory);
-    }
+    // compare inventory and display result
+    compareInventoryAndUpdate(requiredExpArray);
 
-    // compute net inventory
-    var netExp = computeExpAmount(expPotionValuesArray, remainingInventory);
+})
 
-    // display result
-    if(netExp < 0) {
-        resultText.innerHTML = "결과: 경험치 포션 부족";
-        expPotionResultHeader.innerHTML = "추가구매 필요량:";
-        initializeResultsDisplay();
-        $('#' + expPotionResultsArray[expPotionResultUnit]).html(Math.ceil((-1) * netExp / expPotionValuesArray[expPotionResultUnit]));
-    } else {
-        resultText.innerHTML = "결과: 경험치 포션 충분";
-        expPotionResultHeader.innerHTML = "레벨업 후 남은 보유량:";
-        remainingInventory = expPotionInventoryArray;
-        for(var j=0; j<requiredExpArray.length; j++) {
-            remainingInventory = consumeExpPotions(requiredExpArray[j], expPotionValuesArray, remainingInventory);
-        }
-        initializeResultsDisplay();
-        for(var key in remainingInventory) {
-            $('#' + expPotionResultsArray[key]).html(remainingInventory[key]);
-        }
-    }
+addExpButton.addEventListener("click", function() {
+
+    addRequiredExp(lvlCurrent.value, lvlTarget.value, lvlCharacters.value);
 
 })
 

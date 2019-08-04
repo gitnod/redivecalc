@@ -191,7 +191,7 @@ function addExpenditure(currentLvl, targetLvl, gearDictionary, characters) {
 
     if(isAdmissible == true) {
 
-        // incrase number of rows by 1
+        // increase number of rows by 1
         resultTableLength += 1;
         rowNumber = resultTableLength;
 

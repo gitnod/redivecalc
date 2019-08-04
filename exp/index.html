@@ -11,7 +11,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-  <title>경험치 물약 소비량 계산기</title>
+  <title>경험치 포션 소비량 계산기</title>
 
 </head>
 
@@ -19,9 +19,9 @@
 
 <div class="container">
 
-  <h2 align="center">경험치 물약 소비량 계산기</h2>
+  <h2 align="center">경험치 포션 소비량 계산기</h2>
 
-  <p align="center" id="desc">보유중인 경험치 물약의 양과 캐릭터의 레벨 상승에 필요한 경험치 양을 비교합니다.</p>
+  <p align="center" id="desc">보유중인 경험치 포션으로 캐릭터들의 레벨 상승이 가능한지 계산합니다.</p>
 
   <form>
 
@@ -41,7 +41,7 @@
           <thead>
             <tr>
               <th colspan="4">
-                경험치 물약 보유량
+                경험치 포션 보유량
               </th>
             </tr>
             <tr>
@@ -115,6 +115,11 @@
         <table id="resultTable" class="table table-sm table-bordered bg-white text-center table-responsive-md" hidden>
           <thead>
             <tr>
+              <th colspan="4">
+                  캐릭터 레벨업 내역
+              </th>
+            </tr>
+            <tr>
               <th scope="col">현재 레벨</th>
               <th scope="col">목표 레벨</th>
               <th scope="col">캐릭터 수</th>
@@ -160,7 +165,7 @@
               <td id="expPotionResultTier1">0</td>
               <td id="expPotionResultTier2">0</td>
               <td id="expPotionResultTier3">0</td>
-              <td id="expPotionResultTier4">0</td>
+              <td id="expPotionResultTier4">274</td>
             </tr>
           </tbody>
         </table>
@@ -176,71 +181,6 @@
   <button type="button" id="backButton" class="btn btn-secondary btn-lg btn-block">메인 메뉴로</button><br>
 
   <p>경험치 필요량 출처: <a target="_blank" href="https://appmedia.jp/priconne-redive/2059372">클릭</a></p>
-
-  <div class="modal fade" id="potionDialog" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">포션 보유량 설정</h5>
-          <button type="button" class="close" data-dismiss="modal">
-            <span>&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-          <!--
-
-          <p>
-            경험치 포션 보유량을 입력하세요.
-          <p>
-
-          -->
-
-          <form>
-
-            <div class="form-row">
-              <div class="form-group col">
-                <table class="table table-sm text-center">
-                  <thead>
-                    <tr>
-                      <th colspan="4">
-                        경험치 물약 보유량을 입력하세요.
-                      </th>
-                    </tr>
-                    <tr>
-                      <th scope="col">미니</th>
-                      <th scope="col">일반</th>
-                      <th scope="col">하이</th>
-                      <th scope="col">메가</th>
-                    </tr>
-                    <tr>
-                      <th scope="col"><img src="../data/expPotionTier1.png" style="max-width:100%;"></th>
-                      <th scope="col"><img src="../data/expPotionTier2.png" style="max-width:100%;"></th>
-                      <th scope="col"><img src="../data/expPotionTier3.png" style="max-width:100%;"></th>
-                      <th scope="col"><img src="../data/expPotionTier4.jpg" style="max-width:100%;"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input id="expPotionInputTier1" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
-                      <td><input id="expPotionInputTier2" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
-                      <td><input id="expPotionInputTier3" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
-                      <td><input id="expPotionInputTier4" type="number" class="form-control" step="1" min="0" value="0" onfocus="this.select();"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </form>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
