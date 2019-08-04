@@ -94,7 +94,7 @@ function createRequiredExpArray(currentLvl, targetLvl, characters) {
 
     if(isAdmissible == true) {
         for(var j=0; j<characters; j++) {
-            requiredExpArray.push(expCharacterTable[lvlTarget.value-1]["Cumul"] - expCharacterTable[lvlCurrent.value-1]["Cumul"]);
+            requiredExpArray.push(expCharacterTable[targetLvl-1]["Cumul"] - expCharacterTable[currentLvl-1]["Cumul"]);
         }
     }
 
@@ -344,7 +344,7 @@ calcTypeAdvanced.addEventListener("click", function() {
 calculateExpButton.addEventListener("click", function() {
 
     // read required levelups
-    var requiredExpArray = createRequiredExpArray(lvlCurrent.value, lvlTarget.value, lvlCharacters.value);
+    var requiredExpArray = createRequiredExpArray(Number(lvlCurrent.value), Number(lvlTarget.value), Number(lvlCharacters.value));
 
     // compare inventory and display result
     compareInventoryAndUpdate(requiredExpArray);
@@ -353,7 +353,7 @@ calculateExpButton.addEventListener("click", function() {
 
 addExpButton.addEventListener("click", function() {
 
-    addRequiredExp(lvlCurrent.value, lvlTarget.value, lvlCharacters.value);
+    addRequiredExp(Number(lvlCurrent.value), Number(lvlTarget.value), Number(lvlCharacters.value));
 
 })
 
