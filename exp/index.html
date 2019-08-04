@@ -62,46 +62,48 @@
         </table>
       </div>
       
-      <div class="form-group col-md-6 align-self-end">
-        <table class="table table-sm text-center">
-          <thead>
-            <tr>
-              <th colspan="3">
-                  캐릭터 레벨업 정보
-              </th>
-            </tr>
-            <tr>
-              <th scope="col">현재 레벨</th>
-              <th scope="col">목표 레벨</th>
-              <th scope="col">캐릭터 수</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input id="lvlCurrent" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
-              <td><input id="lvlTarget" type="number" class="form-control text-center" step="1" min="1" max="130" value="130" onfocus="this.select();"></td>
-              <td><input id="lvlCharacters" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="form-group col-md-6">
+
+        <div class="form-group form-row">
+          <table class="table table-sm text-center">
+            <thead>
+              <tr>
+                <th colspan="3">
+                    캐릭터 레벨업 정보
+                </th>
+              </tr>
+              <tr>
+                <th scope="col">현재 레벨</th>
+                <th scope="col">목표 레벨</th>
+                <th scope="col">캐릭터 수</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input id="lvlCurrent" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+                <td><input id="lvlTarget" type="number" class="form-control text-center" step="1" min="1" max="130" value="130" onfocus="this.select();"></td>
+                <td><input id="lvlCharacters" type="number" class="form-control text-center" step="1" min="1" max="130" value="1" onfocus="this.select();"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-md"><br></div>
+
+        <div class="form-group form-row" id="calcRowSimple">
+          <div class="form-group col">
+            <button type="button" id="calculateExpButton" class="btn btn-lg btn-primary btn-block">계산하기</button>
+          </div>
+        </div>
+
+        <div class="form-group form-row" id="calcRowAdvanced" hidden>
+          <div class="form-group col">
+            <button type="button" id="addExpButton" class="btn btn-lg btn-primary btn-block">레벨업 내역에 추가</button>
+          </div>
+        </div>
+
       </div>
 
-    </div>
-
-    <div class="form-row" id="calcRowSimple">
-
-      <div class="form-group col">
-        <button type="button" id="calculateExpButton" class="btn btn-lg btn-primary btn-block">계산하기</button>
-      </div>
-
-    </div>
-
-    <div class="form-row" id="calcRowAdvanced" hidden>
-
-      <div class="form-group col">
-        <button type="button" id="addExpButton" class="btn btn-lg btn-primary btn-block">목록에 추가</button>
-      </div>
-  
     </div>
 
   </form>
