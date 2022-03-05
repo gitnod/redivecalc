@@ -1,6 +1,6 @@
 
 library(foreach)
-setwd("C:/GitRepo/redivecalc/data/")
+setwd("~/redivecalc/data/")
 data.raw = read.csv("characterPositionsList.csv", header = FALSE, as.is = TRUE, na.strings = "")
 data.limited = read.csv("characterLimitedList.csv", header = FALSE, as.is = TRUE, na.strings = "")$V1
 
